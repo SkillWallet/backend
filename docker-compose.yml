@@ -9,10 +9,10 @@ services:
     working_dir: /app
     environment:
       - ENVIRONMENT_IP=localhost
-      - SERVER_PORT=3005
+      - SERVER_PORT=4005
       - NODE_ENV=development
     ports:
-      - "3005:3005"
+      - "4005:4005"
     command: /bin/bash -c 'yarn; yarn start;'
     networks:
       - skill-wallet
