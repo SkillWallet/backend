@@ -4,6 +4,7 @@ import {
     QRCodeAuth,
     SkillWallet,
     PendingActivation,
+    CommunityListView,
 } from '../models';
 import { SkillWalletContracts } from '../contracts/skillWallet.contracts';
 import { CommunityContracts } from '../contracts/community.contracts';
