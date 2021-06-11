@@ -59,6 +59,31 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
     }
 }
 
+
+export const getCommunityDetails = async (userAddress: string): Promise<CommunityListView> => {
+    const isActive = await SkillWalletContracts.isActive(userAddress);
+    const tokenId = await SkillWalletContracts.getSkillWalletIdByOwner(userAddress);
+    if (isActive) {
+        const currentCommunity = await SkillWalletContracts.getCurrentCommunity(tokenId);
+
+        const members = await CommunityContracts.getMembersCount(currentCommunity);
+        const communityMetadataUrl = await CommunityContracts.getMetadataUri(currentCommunity);
+        let communityMetadata = await getJSONFromURI(communityMetadataUrl)
+        const name = communityMetadata.name ?? 'DiTo #1';
+        const description = communityMetadata.description ?? 'description description description';
+        return {
+            members,
+            name,
+            scarcityScore: 0,
+            description,
+            address: currentCommunity
+        };
+
+    } else {
+        return undefined;
+    }
+}
+
 export const hasPendingActivation = async (userAddress: string): Promise<boolean> => {
     const query = new Where('address').eq(userAddress);
     const activationAttempts = (await threadDBClient.filter(PendingSWActivationCollection, query)) as PendingActivation[];
