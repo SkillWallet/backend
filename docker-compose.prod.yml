@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  skill-wallet-api:
+    container_name: skill-wallet-api
+    image: node
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - ENVIRONMENT_IP=3.250.29.111
+      - SERVER_PORT=3005
+      - NODE_ENV=production
+    ports:
+      - "3005:3005"
+    command: /bin/bash -c 'yarn; yarn start;'
+    networks:
+      - skill-wallet
+
+networks:
+  skill-wallet:

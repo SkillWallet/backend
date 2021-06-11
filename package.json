@@ -1,0 +1,66 @@
+{
+  "name": "skill-wallet-api",
+  "version": "1.0.0",
+  "description": "SkillWallet API generates nonces for implementing offchain signature mechanism",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --resolveJsonModule",
+    "dev": "npm install && nodemon",
+    "start": "npm run build && node ./dist/server.js",
+    "testFlow": "npm run build && node ./dist/testFlow.js",
+    "test": "mocha -r ts-node/register --timeout 40000 test/*.spec.ts"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
+    "$",
+    "npm",
+    "init"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@textile/hub": "6.1.2",
+    "axios": "0.21.1",
+    "ethers": "^5.0.24",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "1.4.5",
+    "cors": "2.8.5",
+    "crypto-js": "4.0.0",
+    "dotenv": "^8.0.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-prom-bundle": "^5.1.5",
+    "express-session": "1.17.1",
+    "helmet": "^3.20.0",
+    "inversify": "^5.0.1",
+    "passport": "0.4.1",
+    "passport-web3": "0.1.7",
+    "prom-client": "^11.1.2",
+    "reflect-metadata": "^0.1.13",
+    "unique-string": "^1.0.0",
+    "uuid": "8.3.1",
+    "winston": "^3.2.1",
+    "keccak256": "1.0.2",
+    "eccrypto-js": "^5.4.0"
+  },
+  "devDependencies": {
+    "@types/big.js": "4.0.5",
+    "@types/express": "^4.17.1",
+    "@types/express-serve-static-core": "4.16.2",
+    "@types/mocha": "5.2.7",
+    "@types/node": "^12.6.8",
+    "@types/request": "2.47.0",
+    "@types/request-promise": "4.1.41",
+    "@types/uuid": "3.4.3",
+    "big.js": "5.2.2",
+    "chai": "^4.2.0",
+    "gh-pages": "^3.1.0",
+    "mocha": "^6.2.0",
+    "nodemon": "^1.19.1",
+    "ts-node": "^8.3.0",
+    "typemoq": "2.1.0",
+    "typescript": "^3.5.3"
+  }
+}
