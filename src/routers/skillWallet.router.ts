@@ -21,10 +21,7 @@ export class SkillWalletRouter {
     this._router.post('/:skillWalletId/nonces', this.skillWalletController.generateNonce);
     this._router.post("/:skillWalletId/activate", this.skillWalletController.activateSkillWallet);
     this._router.get("/:skillWalletId/isActive", this.skillWalletController.isActive);
-    this._router.post("/:skillWalletId/validate", this.skillWalletController.validateSW);
-    this._router.get("/keys", this.skillWalletController.getKeys);
-
-
+    this._router.post("/:skillWalletId/pubKey", this.skillWalletController.addPubKeyToSkillWallet);
   }
 
   public get router(): Router {

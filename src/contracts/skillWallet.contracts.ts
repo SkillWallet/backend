@@ -75,38 +75,48 @@ export class SkillWalletContracts {
         }
     }
 
-    public static async activate(tokenId: string, pubKey: string): Promise<void> {
+    public static async addPubKeyToSkillWallet(tokenId: string, pubKey: string): Promise<void> {
         const contractInst = skillWalletContract();
 
-        let createTx = await contractInst.activateSkillWallet(
+        let addPubKeyTx = await contractInst.addPubKeyToSkillWallet(
             tokenId,
             pubKey
         );
 
         // Wait for transaction to finish
-        const registerSkillWalletTransactionResult = await createTx.wait();
-        const { events } = registerSkillWalletTransactionResult;
+        const transactionResult = await addPubKeyTx.wait();
+        const { events } = transactionResult;
         const registeredEvent = events.find(
-            e => e.event === 'SkillWalletActivated',
+            e => e.event === 'PubKeyAddedToSkillWallet',
         );
         if (!registeredEvent)
             throw Error('Something went wrong!');
         else
-            console.log('Skill wallet Activated');
+            console.log('Successfully added pubKey to the SW!');
     }
 
 
-    public static async validate(signature: string, tokenId: string, action: Actions): Promise<void> {
+    public static async validate(signature: string, tokenId: string, action: Actions, stringParams: [], intParams: [], addressParams: []): Promise<void> {
         const contractInst = skillWalletContract();
 
         let createTx = await contractInst.validate(
             signature,
             tokenId,
-            action
+            action,
+            stringParams,
+            intParams, 
+            addressParams
         );
 
         // Wait for transaction to finish
-        const validateSkillWalletTransactionResult = await createTx.wait();
-        console.log(validateSkillWalletTransactionResult);
+        const transactionResult = await createTx.wait();
+        const { events } = transactionResult;
+        const registeredEvent = events.find(
+            e => e.event === 'ValidationRequestIdSent',
+        );
+        if (!registeredEvent)
+            throw Error('Something went wrong!');
+        else
+            console.log('Triggered chainlink validation!');
     }
 }

@@ -3,7 +3,7 @@ import { Response } from "express";
 import { injectable } from "inversify";
 import { SkillWalletContracts } from "../contracts/skillWallet.contracts";
 import * as skillWalletService from '../services/skillWallet.service';
-import * as eccryptoJS from 'eccrypto-js';
+import { Actions } from "../models";
 
 @injectable()
 export class SkillWalletController {
@@ -33,7 +33,7 @@ export class SkillWalletController {
       res.status(500).send({ error: "Something went wrong, please try again later." });
     }
   }
-  
+
   public hasPendingAuthentication = async (req: any, res: Response) => {
     try {
       const pendingAuth = await skillWalletService.hasPendingActivation(req.query.address);
@@ -53,7 +53,7 @@ export class SkillWalletController {
         return res.status(400).send({ message: "Skill Wallet already activated" });
       } else {
         console.log('activating SW');
-        await SkillWalletContracts.activate(req.params.skillWalletId, req.body.pubKey);
+        await SkillWalletContracts.validate(req.body.signature, req.params.skillWalletId, Actions.Activate, [], [], []);
         return res.status(200).send({ message: "Skill Wallet activated successfully." });
       }
     } catch (err) {
@@ -130,51 +130,14 @@ export class SkillWalletController {
     }
   }
 
-  public validateSW = async (req: any, res: Response) => {
-    try {
-      await SkillWalletContracts.validate(req.body.signature, req.params.skillWalletId, req.body.action);
-      return res.status(200).send();
-    } catch (err) {
-      this.loggerService.error(err);
-      res.status(500).send({ error: "Something went wrong, please try again later." });
+  public addPubKeyToSkillWallet = async (req: any, res: Response) => {
+    const pubKey = req.body.pubKey;
+    const skillWalletId = req.params.skillWalletId;
+    if (!skillWalletId) {
+      res.status(400).send({ message: 'pubKey is a required field' });
+    } else {
+      await SkillWalletContracts.addPubKeyToSkillWallet(skillWalletId, pubKey);
+      res.status(200).send({ message: 'Successfully added pubKey to SW.' });
     }
-  }
-
-  public getKeys = async (req: any, res: Response) => {
-    // mobile App
-    const key = eccryptoJS.generateKeyPair();
-    const hex = key.publicKey.toString('hex');
-    console.log("PUBLIC KEY HEX", hex);
-
-    const hashed = eccryptoJS.keccak256(Buffer.from(hex));
-    console.log("PUBLIC KEY HASHED", eccryptoJS.bufferToHex(hashed));
-
-    const str = '123';
-    const msg = eccryptoJS.utf8ToBuffer(str);
-    const hash = await eccryptoJS.sha256(msg);
-    const signed = eccryptoJS.sign(key.privateKey, hash, true);
-
-    const signedStr = eccryptoJS.bufferToHex(signed);
-    console.log(signedStr, "SIGNED STRING");
-
-    // Adapter
-
-
-    function hexToBytes(hex) {
-      for (var bytes = [], c = 0; c < hex.length; c += 2)
-        bytes.push(parseInt(hex.substr(c, 2), 16));
-      return bytes;
-    }
-
-    const sigBytes = hexToBytes(signedStr);
-    const buf = Buffer.from(sigBytes);
-
-    const pub = eccryptoJS.recover(hash, buf);
-    const recoveredHexPub = pub.toString('hex');
-    console.log("RECOVEDER PUBLIC KEY HEX", recoveredHexPub);
-
-    const hashedRecoveredPub = eccryptoJS.keccak256(Buffer.from(recoveredHexPub));
-    console.log("RECOVEDER PUBLIC KEY HASHED", eccryptoJS.bufferToHex(hashedRecoveredPub));
-    res.status(200).send({ isValid: eccryptoJS.bufferToHex(hashed) === eccryptoJS.bufferToHex(hashedRecoveredPub) });
   }
 }
