@@ -94,7 +94,7 @@ export const hasPendingActivation = async (userAddress: string): Promise<boolean
 
 export const getNonceForQR = async (action: number, tokenId?: string): Promise<any> => {
     const nonce = getNonce();
-    if ((!tokenId || tokenId === '-1') && action !== Actions.LOGIN)
+    if ((!tokenId || tokenId === '-1') && action !== Actions.Login)
         return { message: 'skillWalletId is required' };
         console.log(action);
     const authModel: QRCodeAuth = {
@@ -109,7 +109,7 @@ export const getNonceForQR = async (action: number, tokenId?: string): Promise<a
 }
 
 export const loginValidation = async (nonce: number, tokenId: string): Promise<boolean> => {
-    const query = new Where('nonce').eq(nonce).and('action').eq(Actions.LOGIN).and('isValidated').eq(false);
+    const query = new Where('nonce').eq(nonce).and('action').eq(Actions.Login).and('isValidated').eq(false);
     const login = (await threadDBClient.filter(QRCodeAuthCollection, query)) as QRCodeAuth[];
     if (login && login.length > 0) {
         login[login.length - 1].isValidated = true;
@@ -125,7 +125,7 @@ export const findNonce = async (action: Actions, tokenId: string): Promise<numbe
     const actionNumber = +action;
     console.log(actionNumber);
     console.log(typeof(actionNumber));
-    if (action === Actions.LOGIN)
+    if (action === Actions.Login)
         // TODO: add tokenId
         query = new Where('action').eq(actionNumber).and('isValidated').eq(false);
     else
@@ -135,24 +135,13 @@ export const findNonce = async (action: Actions, tokenId: string): Promise<numbe
 }
 
 export const getTokenIDAfterLogin = async (nonce: number): Promise<string> => {
-    const query = new Where('nonce').eq(nonce).and('action').eq(Actions.LOGIN).and('isValidated').eq(true);
+    const query = new Where('nonce').eq(nonce).and('action').eq(Actions.Login).and('isValidated').eq(true);
     const login = (await threadDBClient.filter(QRCodeAuthCollection, query)) as QRCodeAuth[];
     if (login && login.length > 0) {
         await threadDBClient.delete(QRCodeAuthCollection, query);
         return login[login.length - 1].tokenId;
     } else
         return "-1";
-}
-
-export const activateSkillWallet = async (tokenId: string, pubKey: string): Promise<void> => {
-    await SkillWalletContracts.activate(tokenId, pubKey);
-    const ownerAddr = await SkillWalletContracts.ownerOf(tokenId.toString());
-    const query = new Where('address').eq(ownerAddr);
-    const userActivations = (await threadDBClient.filter(PendingSWActivationCollection, query)) as PendingActivation[];
-
-    if (userActivations && userActivations.length > 0) {
-        await threadDBClient.delete(PendingSWActivationCollection, query);
-    }
 }
 
 export const invalidateNonce = async (nonce: number, tokenId: string, action: Actions): Promise<void> => {
