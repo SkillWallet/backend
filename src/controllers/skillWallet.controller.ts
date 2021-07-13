@@ -131,13 +131,19 @@ export class SkillWalletController {
   }
 
   public addPubKeyToSkillWallet = async (req: any, res: Response) => {
-    const pubKey = req.body.pubKey;
-    const skillWalletId = req.params.skillWalletId;
-    if (!skillWalletId) {
-      res.status(400).send({ message: 'pubKey is a required field' });
-    } else {
-      await SkillWalletContracts.addPubKeyToSkillWallet(skillWalletId, pubKey);
-      res.status(200).send({ message: 'Successfully added pubKey to SW.' });
+    try {
+      const pubKey = req.body.pubKey;
+      const skillWalletId = req.params.skillWalletId;
+      if (!pubKey)
+        return res.status(400).send({ message: 'pubKey is a required field' })
+      if (!skillWalletId || skillWalletId < 0) {
+        res.status(400).send({ message: 'skillWallet is a required field' });
+      } else {
+        await SkillWalletContracts.addPubKeyToSkillWallet(skillWalletId, pubKey);
+        res.status(200).send({ message: 'Successfully added pubKey to SW.' });
+      }
+    } catch (err) {
+      res.status(500).send({ error: "Something went wrong, please try again later." });
     }
   }
 }
