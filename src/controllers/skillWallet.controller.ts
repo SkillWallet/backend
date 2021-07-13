@@ -70,6 +70,7 @@ export class SkillWalletController {
   try {
 
     const isActive = await SkillWalletContracts.isActive(req.params.skillWalletId);
+    console.log(isActive);
     return res.status(200).send({ isActive });
   } catch (err) {
     this.loggerService.error(err);

@@ -58,6 +58,7 @@ export class SkillWalletContracts {
         try {
             const contract = skillWalletContract();
             const isActivated = await contract.isSkillWalletActivated(tokenId);
+            console.log(isActivated);
             return isActivated;
         } catch (err) {
             console.log(err);
