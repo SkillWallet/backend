@@ -83,9 +83,12 @@ export class SkillWalletContracts {
             pubKey
         );
 
+        console.log(addPubKeyTx);
+
         // Wait for transaction to finish
         const transactionResult = await addPubKeyTx.wait();
         const { events } = transactionResult;
+        console.log(events);
         const registeredEvent = events.find(
             e => e.event === 'PubKeyAddedToSkillWallet',
         );
@@ -104,7 +107,7 @@ export class SkillWalletContracts {
             tokenId,
             action,
             stringParams,
-            intParams, 
+            intParams,
             addressParams
         );
 
