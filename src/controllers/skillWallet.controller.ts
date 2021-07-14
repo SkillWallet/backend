@@ -4,6 +4,7 @@ import { injectable } from "inversify";
 import { SkillWalletContracts } from "../contracts/skillWallet.contracts";
 import * as skillWalletService from '../services/skillWallet.service';
 import { Actions } from "../models";
+import { logger } from "ethers";
 
 @injectable()
 export class SkillWalletController {
@@ -164,6 +165,9 @@ export class SkillWalletController {
 
   public getChat = async (req: any, res: Response) => {
     try {
+
+      this.loggerService.info('params: ' + JSON.stringify(req.params));
+      this.loggerService.info('req.query: ' + JSON.stringify(req.query));
       const skillWalletId = req.params.skillWalletId;
       const recipient = req.query.recipient;
 
@@ -181,6 +185,8 @@ export class SkillWalletController {
 
   public addMessage = async (req: any, res: Response) => {
     try {
+      this.loggerService.info('params: ' + JSON.stringify(req.params));
+      this.loggerService.info('body: ' + JSON.stringify(req.body));
       const skillWalletId = req.params.skillWalletId;
       const recipient = req.body.recipient;
       const text = req.body.text;
