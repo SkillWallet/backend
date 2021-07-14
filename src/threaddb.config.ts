@@ -11,11 +11,13 @@ import {
 import {
   QRCodeAuthCollection,
   PendingSWActivationCollection,
+  ChatCollection,
 } from './constants/constants';
 import { injectable } from 'inversify';
 import {
   qrCodeAuthSchema,
   pendingActivationSchema,
+  chatSchema
 } from './models'
 require('dotenv').config()
 
@@ -55,6 +57,12 @@ class ThreadDBInit {
       await client.getCollectionIndexes(this.ditoThreadID, PendingSWActivationCollection);
     } catch (err) {
       await client.newCollection(this.ditoThreadID, { name: PendingSWActivationCollection, schema: pendingActivationSchema });
+    }
+
+    try {
+      await client.getCollectionIndexes(this.ditoThreadID, ChatCollection);
+    } catch(err) {
+      await client.newCollection(this.ditoThreadID, { name: ChatCollection, schema: chatSchema });
     }
 
   }

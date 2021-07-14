@@ -88,20 +88,6 @@ export class SkillWalletController {
     }
   }
 
-  public login = async (req: any, res: Response) => {
-    try {
-      const success = await skillWalletService.loginValidation(req.body.nonce, req.body.tokenId);
-      if (success)
-        res.status(200).send({ message: "Successful login." });
-      else
-        res.status(400).send({ message: "Invalid login." });
-
-    } catch (err) {
-      this.loggerService.error(err);
-      res.status(500).send({ error: "Something went wrong, please try again later." });
-    }
-  }
-
   public getLogins = async (req: any, res: Response) => {
     try {
       const tokenId = await skillWalletService.getTokenIDAfterLogin(req.query.nonce);
@@ -170,6 +156,43 @@ export class SkillWalletController {
         await SkillWalletContracts.validate(req.body.signature, req.params.skillWalletId, req.body.action, [], [], []);
         return res.status(200).send({ message: "Skill Wallet validated successfully." });
       }
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
+  public getChat = async (req: any, res: Response) => {
+    try {
+      const skillWalletId = req.params.skillWalletId;
+      const recipient = req.query.recipient;
+
+      if (!skillWalletId || skillWalletId < 0)
+        return res.status(404).send({ message: 'skillWallet is a required field' });
+      if (!recipient || recipient < 0)
+        return res.status(400).send({ message: 'recipient is a required field' });
+      const chat = await skillWalletService.getChat(skillWalletId, recipient);
+      return res.status(200).send({ chat });
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
+  public addMessage = async (req: any, res: Response) => {
+    try {
+      const skillWalletId = req.params.skillWalletId;
+      const recipient = req.body.recipient;
+      const text = req.body.text;
+      if (!skillWalletId || skillWalletId < 0)
+        return res.status(404).send({ message: 'skillWallet is a required field' });
+      if (!recipient || recipient < 0)
+        return res.status(400).send({ message: 'recipient is a required field' });
+      if (!text)
+        return res.status(400).send({ message: 'text is a required field' });
+
+      await skillWalletService.addMessage(skillWalletId, recipient, req.body.text);
+      res.status(201).send();
     } catch (err) {
       this.loggerService.error(err);
       res.status(500).send({ error: "Something went wrong, please try again later." });

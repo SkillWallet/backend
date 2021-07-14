@@ -11,18 +11,28 @@ export class SkillWalletRouter {
   }
 
   private init(): void {
-    this._router.get('/', this.skillWalletController.get);
-    this._router.get("/community", this.skillWalletController.getCommunity);
-    this._router.get("/hasPendingAuth", this.skillWalletController.hasPendingAuthentication);
-    this._router.post("/login", this.skillWalletController.login);
-    this._router.get("/login", this.skillWalletController.getLogins);
-    this._router.get("/:skillWalletId/nonces", this.skillWalletController.getNonceForValidation);
-    this._router.delete("/:skillWalletId/nonces", this.skillWalletController.deleteNonce);
-    this._router.post('/:skillWalletId/nonces', this.skillWalletController.generateNonce);
+    // Activation & Validation
     this._router.post("/:skillWalletId/activate", this.skillWalletController.activateSkillWallet);
     this._router.get("/:skillWalletId/isActive", this.skillWalletController.isActive);
     this._router.post("/:skillWalletId/pubKey", this.skillWalletController.addPubKeyToSkillWallet);
     this._router.post("/:skillWalletId/validate", this.skillWalletController.validate);
+
+    // GET
+    this._router.get('/', this.skillWalletController.get);
+    this._router.get("/community", this.skillWalletController.getCommunity);
+
+    // External Login
+    this._router.get("/hasPendingAuth", this.skillWalletController.hasPendingAuthentication);
+    this._router.get("/login", this.skillWalletController.getLogins);
+
+    // Nonces
+    this._router.get("/:skillWalletId/nonces", this.skillWalletController.getNonceForValidation);
+    this._router.delete("/:skillWalletId/nonces", this.skillWalletController.deleteNonce);
+    this._router.post('/:skillWalletId/nonces', this.skillWalletController.generateNonce);
+
+    // Messages
+    this._router.get("/:skillWalletId/message", this.skillWalletController.getChat);
+    this._router.post("/:skillWalletId/message", this.skillWalletController.addMessage);
   }
 
   public get router(): Router {
