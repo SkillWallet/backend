@@ -5,12 +5,13 @@ import {
     SkillWallet,
     PendingActivation,
     CommunityListView,
+    Chat,
 } from '../models';
 import { SkillWalletContracts } from '../contracts/skillWallet.contracts';
 import { CommunityContracts } from '../contracts/community.contracts';
 import { Where } from '@textile/hub';
 import threadDBClient from '../threaddb.config';
-import { PendingSWActivationCollection, QRCodeAuthCollection } from '../constants/constants';
+import { ChatCollection, PendingSWActivationCollection, QRCodeAuthCollection } from '../constants/constants';
 import { getJSONFromURI, getNonce } from '../utils/helpers';
 
 export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
@@ -20,8 +21,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         skills: [],
         currentCommunity: {}
     } as SkillWallet;
-    // const isActive = await SkillWalletContracts.isActive(tokenId);
-    const isActive = true;
+    const isActive = await SkillWalletContracts.isActive(tokenId);
     if (isActive) {
         const jsonUri = await SkillWalletContracts.getTokenURI(tokenId);
         let jsonMetadata = await getJSONFromURI(jsonUri)
@@ -97,7 +97,7 @@ export const getNonceForQR = async (action: number, tokenId?: string): Promise<a
     const nonce = getNonce();
     if ((!tokenId || tokenId === '-1') && action !== Actions.Login)
         return { message: 'skillWalletId is required' };
-        console.log(action);
+    console.log(action);
     const authModel: QRCodeAuth = {
         _id: undefined,
         nonce,
@@ -125,7 +125,7 @@ export const findNonce = async (action: Actions, tokenId: string): Promise<numbe
     let query = undefined;
     const actionNumber = +action;
     console.log(actionNumber);
-    console.log(typeof(actionNumber));
+    console.log(typeof (actionNumber));
     if (action === Actions.Login)
         // TODO: add tokenId
         query = new Where('action').eq(actionNumber).and('isValidated').eq(false);
@@ -154,4 +154,60 @@ export const invalidateNonce = async (nonce: number, tokenId: string, action: Ac
             auth.tokenId = tokenId;
         threadDBClient.update(QRCodeAuthCollection, auth._id, auth);
     });
+}
+
+export const getChat = async (skillWalletId: string, recipient: string): Promise<Chat> => {
+    const query1 = new Where('participant1').eq(skillWalletId).and('participant2').eq(recipient);
+    const query2 = new Where('participant2').eq(skillWalletId).and('participant1').eq(recipient);
+
+    const finalQuery = query1.or(query2);
+
+    const res = await threadDBClient.filter(ChatCollection, finalQuery) as Chat[];
+    if (res.length > 0)
+        return res[0];
+    else
+        return undefined;
+}
+
+export const addMessage = async (participant1: string, participant2: string, text: string): Promise<void> => {
+    const query1 = new Where('participant1').eq(participant1).and('participant2').eq(participant2);
+    const query2 = new Where('participant2').eq(participant1).and('participant1').eq(participant2);
+
+    const finalQuery = query1.or(query2);
+
+    const res = await threadDBClient.filter(ChatCollection, finalQuery) as Chat[];
+    let chat: Chat;
+    const message = {
+        text,
+        createdAt: new Date().toUTCString(),
+        _id: undefined
+    };
+    if (res.length > 0) {
+        chat = res[0];
+        chat.messages.push(message);
+        await threadDBClient.update(ChatCollection, chat._id, chat);
+    } else {
+
+        const part1JsonUri = await SkillWalletContracts.getTokenURI(participant1);
+        let jsonMetadata1 = await getJSONFromURI(part1JsonUri)
+        console.log(jsonMetadata1);
+        const part2JsonUri = await SkillWalletContracts.getTokenURI(participant2);
+        let jsonMetadata2 = await getJSONFromURI(part2JsonUri)
+        console.log(jsonMetadata2);
+
+
+        chat = {
+            _id: undefined,
+            participant1: participant1,
+            participant2: participant2,
+            participant1Name: jsonMetadata1.properties.username,
+            participant1PhotoUrl: jsonMetadata1.image,
+            participant2Name: jsonMetadata2.properties.username,
+            participant2PhotoUrl: jsonMetadata2.image,
+            messages: [message]
+        };
+
+        await threadDBClient.insert(ChatCollection, chat);
+    }
+
 }
