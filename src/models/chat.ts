@@ -12,6 +12,7 @@ export interface Chat {
 export interface Message {
 	text: string;
 	createdAt: string;
+	sender: string;
 }
 
 
@@ -113,7 +114,8 @@ export const chatSchema = {
 				"type": "object",
 				"required": [
 					"text",
-					"createdAt"
+					"createdAt",
+					"sender"
 				],
 				"properties": {
 					"text": {
@@ -123,6 +125,16 @@ export const chatSchema = {
 						"default": "",
 						"examples": [
 							"text"
+						],
+						"pattern": "^.*$"
+					},
+					"sender": {
+						"$id": "#root/messages/items/sender", 
+						"title": "Sender", 
+						"type": "string",
+						"default": "",
+						"examples": [
+							"4"
 						],
 						"pattern": "^.*$"
 					},

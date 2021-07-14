@@ -169,9 +169,9 @@ export const getChat = async (skillWalletId: string, recipient: string): Promise
         return undefined;
 }
 
-export const addMessage = async (participant1: string, participant2: string, text: string): Promise<void> => {
-    const query1 = new Where('participant1').eq(participant1).and('participant2').eq(participant2);
-    const query2 = new Where('participant2').eq(participant1).and('participant1').eq(participant2);
+export const addMessage = async (sender: string, recipient: string, text: string): Promise<void> => {
+    const query1 = new Where('participant1').eq(sender).and('participant2').eq(recipient);
+    const query2 = new Where('participant2').eq(sender).and('participant1').eq(recipient);
 
     const finalQuery = query1.or(query2);
 
@@ -180,7 +180,7 @@ export const addMessage = async (participant1: string, participant2: string, tex
     const message = {
         text,
         createdAt: new Date().toUTCString(),
-        _id: undefined
+        sender: sender
     };
     if (res.length > 0) {
         chat = res[0];
@@ -188,22 +188,19 @@ export const addMessage = async (participant1: string, participant2: string, tex
         await threadDBClient.update(ChatCollection, chat._id, chat);
     } else {
 
-        const part1JsonUri = await SkillWalletContracts.getTokenURI(participant1);
-        let jsonMetadata1 = await getJSONFromURI(part1JsonUri)
-        console.log(jsonMetadata1);
-        const part2JsonUri = await SkillWalletContracts.getTokenURI(participant2);
-        let jsonMetadata2 = await getJSONFromURI(part2JsonUri)
-        console.log(jsonMetadata2);
-
+        const senderJsonUrl = await SkillWalletContracts.getTokenURI(sender);
+        let senderJsonMetadata = await getJSONFromURI(senderJsonUrl)
+        const recipientJsonUrl = await SkillWalletContracts.getTokenURI(recipient);
+        let recipientJsonMetadata = await getJSONFromURI(recipientJsonUrl)
 
         chat = {
             _id: undefined,
-            participant1: participant1,
-            participant2: participant2,
-            participant1Name: jsonMetadata1.properties.username,
-            participant1PhotoUrl: jsonMetadata1.image,
-            participant2Name: jsonMetadata2.properties.username,
-            participant2PhotoUrl: jsonMetadata2.image,
+            participant1: sender,
+            participant2: recipient,
+            participant1Name: senderJsonMetadata.properties.username,
+            participant1PhotoUrl: senderJsonMetadata.image,
+            participant2Name: recipientJsonMetadata.properties.username,
+            participant2PhotoUrl: recipientJsonMetadata.image,
             messages: [message]
         };
 
