@@ -179,7 +179,7 @@ export const addMessage = async (sender: string, recipient: string, text: string
     let chat: Chat;
     const message = {
         text,
-        createdAt: new Date().toUTCString(),
+        createdAt: Date.now(),
         sender: sender
     };
     if (res.length > 0) {

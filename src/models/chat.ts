@@ -11,7 +11,7 @@ export interface Chat {
 
 export interface Message {
 	text: string;
-	createdAt: string;
+	createdAt: number;
 	sender: string;
 }
 
@@ -141,10 +141,10 @@ export const chatSchema = {
 					"createdAt": {
 						"$id": "#root/messages/items/createdAt", 
 						"title": "Createdat", 
-						"type": "string",
+						"type": "integer",
 						"default": "",
 						"examples": [
-							"2020-10-10"
+							"1626300503171"
 						],
 						"pattern": "^.*$"
 					}
