@@ -11,7 +11,7 @@ import { SkillWalletContracts } from '../contracts/skillWallet.contracts';
 import { CommunityContracts } from '../contracts/community.contracts';
 import { Where } from '@textile/hub';
 import threadDBClient from '../threaddb.config';
-import { ChatCollection, PendingSWActivationCollection, QRCodeAuthCollection } from '../constants/constants';
+import { ChatCollection, NotificationCollection, PendingSWActivationCollection, QRCodeAuthCollection } from '../constants/constants';
 import { getJSONFromURI, getNonce } from '../utils/helpers';
 
 export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
@@ -167,6 +167,12 @@ export const getChat = async (skillWalletId: string, recipient: string): Promise
         return res[0];
     else
         return undefined;
+}
+
+export const getNotifications = async (skillWalletId: string): Promise<Notification[]> => {
+    const query = new Where('skillWalletId').eq(skillWalletId);
+    const res = await threadDBClient.filter(NotificationCollection, query) as Notification[];
+    return res;
 }
 
 export const addMessage = async (sender: string, recipient: string, text: string): Promise<void> => {

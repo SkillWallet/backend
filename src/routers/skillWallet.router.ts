@@ -33,6 +33,9 @@ export class SkillWalletRouter {
     // Messages
     this._router.get("/:skillWalletId/message", this.skillWalletController.getChat);
     this._router.post("/:skillWalletId/message", this.skillWalletController.addMessage);
+
+    // Notifications
+    this._router.get("/:skillWalletId/notifications", this.skillWalletController.getNotifications);
   }
 
   public get router(): Router {
