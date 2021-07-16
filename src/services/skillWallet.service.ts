@@ -163,10 +163,13 @@ export const getChat = async (skillWalletId: string, recipient: string): Promise
     const finalQuery = query1.or(query2);
 
     const res = await threadDBClient.filter(ChatCollection, finalQuery) as Chat[];
-    if (res.length > 0)
+    if (res.length > 0) {
         return res[0];
-    else
-        return undefined;
+    } else {
+        await addMessage(skillWalletId, recipient, undefined);
+        const defaultMessage = await threadDBClient.filter(ChatCollection, finalQuery) as Chat[];
+        return defaultMessage[0];
+    }
 }
 
 export const getNotifications = async (skillWalletId: string): Promise<Notification[]> => {
@@ -183,17 +186,21 @@ export const addMessage = async (sender: string, recipient: string, text: string
 
     const res = await threadDBClient.filter(ChatCollection, finalQuery) as Chat[];
     let chat: Chat;
-    const message = {
-        text,
-        createdAt: Date.now(),
-        sender: sender
-    };
+    let message = undefined;
+    if (text)
+        message = {
+            text,
+            createdAt: Date.now(),
+            sender: sender
+        };
+
+
     if (res.length > 0) {
         chat = res[0];
-        chat.messages.push(message);
+        if (message)
+            chat.messages.push(message);
         await threadDBClient.update(ChatCollection, chat._id, chat);
     } else {
-
         const senderJsonUrl = await SkillWalletContracts.getTokenURI(sender);
         let senderJsonMetadata = await getJSONFromURI(senderJsonUrl)
         const recipientJsonUrl = await SkillWalletContracts.getTokenURI(recipient);
@@ -207,7 +214,7 @@ export const addMessage = async (sender: string, recipient: string, text: string
             participant1PhotoUrl: senderJsonMetadata.image,
             participant2Name: recipientJsonMetadata.properties.username,
             participant2PhotoUrl: recipientJsonMetadata.image,
-            messages: [message]
+            messages: message ? [message] : []
         };
 
         await threadDBClient.insert(ChatCollection, chat);
