@@ -12,12 +12,15 @@ import {
   QRCodeAuthCollection,
   PendingSWActivationCollection,
   ChatCollection,
+  NotificationCollection,
 } from './constants/constants';
 import { injectable } from 'inversify';
 import {
   qrCodeAuthSchema,
   pendingActivationSchema,
-  chatSchema
+  chatSchema,
+  notificationSchema,
+  Notification
 } from './models'
 require('dotenv').config()
 
@@ -61,10 +64,35 @@ class ThreadDBInit {
 
     try {
       await client.getCollectionIndexes(this.ditoThreadID, ChatCollection);
-    } catch(err) {
+    } catch (err) {
       await client.newCollection(this.ditoThreadID, { name: ChatCollection, schema: chatSchema });
     }
+    try {
+      await client.getCollectionIndexes(this.ditoThreadID, NotificationCollection);
+    } catch (err) {
+      await client.newCollection(this.ditoThreadID, { name: NotificationCollection, schema: notificationSchema });
+    }
 
+    // const notif1: Notification = {
+    //   _id: undefined, 
+    //   contactSkillWalletId: "3",
+    //   skillWalletId: "4",
+    //   message: "art working on your Gig - and earn DITO Credits!",
+    //   title: "Your Gig has started!"
+    // };
+
+
+    // const notif2: Notification = {
+    //   _id: undefined, 
+    //   contactSkillWalletId: "3",
+    //   skillWalletId: "4",
+    //   message: "art working on your Gig - and earn DITO Credits!",
+    //   title: "Your Gig has started!"
+    // };
+
+    // await client.create(this.ditoThreadID, NotificationCollection, [
+    //   notif1, notif2
+    // ])
   }
 
 
