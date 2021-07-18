@@ -214,4 +214,18 @@ export class SkillWalletController {
       res.status(500).send({ error: "Something went wrong, please try again later." });
     }
   }
+
+  public getNotifications = async (req: any, res: Response) => {
+    try {
+      const skillWalletId = req.params.skillWalletId;
+      if (!skillWalletId || skillWalletId < 0)
+        return res.status(404).send({ message: 'skillWallet is a required field' });
+      
+      const notifications = await skillWalletService.getNotifications(skillWalletId);
+      res.status(200).send({ notifications } );
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
 }
