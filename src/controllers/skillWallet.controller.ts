@@ -154,8 +154,18 @@ export class SkillWalletController {
       if (!isActive) {
         return res.status(400).send({ message: "Skill Wallet is not activated yet!" });
       } else {
-        await SkillWalletContracts.validate(req.body.signature, req.params.skillWalletId, req.body.action, [], [], []);
-        return res.status(200).send({ message: "Skill Wallet validated successfully." });
+        const strParams = req.body.stringParams ?? [];
+        const intParams = req.body.intParams ?? [];
+        const addressParams = req.body.addressParams ?? [];
+        await SkillWalletContracts.validate(
+          req.body.signature,
+          req.params.skillWalletId,
+          req.body.action,
+          strParams,
+          intParams,
+          addressParams
+        );
+        return res.status(200).send({ message: "Validation requested." });
       }
     } catch (err) {
       this.loggerService.error(err);

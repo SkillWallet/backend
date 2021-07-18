@@ -110,6 +110,7 @@ export class SkillWalletContracts {
             stringParams,
             intParams,
             addressParams
+            // {gasLimit: 12000000 }
         );
 
         // Wait for transaction to finish
