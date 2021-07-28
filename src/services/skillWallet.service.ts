@@ -71,7 +71,7 @@ export const getCommunityDetails = async (userAddress: string): Promise<Communit
         const members = await CommunityContracts.getMembersCount(currentCommunity);
         const communityMetadataUrl = await CommunityContracts.getMetadataUri(currentCommunity);
         let communityMetadata = await getJSONFromURI(communityMetadataUrl)
-        const name = communityMetadata.name ?? 'DiTo #1';
+        const name = communityMetadata.title ?? 'DiTo #1';
         const description = communityMetadata.description ?? 'description description description';
         return {
             members,
