@@ -35,7 +35,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
             let jsonOldCommunityMetadata = await getJSONFromURI(communityMetadata)
             console.log(communityMetadata);
             skillWallet.pastCommunities.push({
-                name: jsonOldCommunityMetadata.name ?? 'DiTo #1',
+                name: jsonOldCommunityMetadata.title ?? 'DiTo #1',
                 address
             })
         });
@@ -48,7 +48,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         const communityMetadata = await CommunityContracts.getMetadataUri(currentCommunity);
         let jsonCommunityMetadata = await getJSONFromURI(communityMetadata)
 
-        skillWallet.currentCommunity.name = jsonCommunityMetadata.name ?? 'DiTo #1';
+        skillWallet.currentCommunity.name = jsonCommunityMetadata.title ?? 'DiTo #1';
         skillWallet.currentCommunity.description = jsonCommunityMetadata.description ?? 'description description description';
         skillWallet.currentCommunity.scarcityScore = 0;
         // skillWallet.diToCredits = await CommunityContracts.getDiToBalance(currentCommunity, userAddress)
