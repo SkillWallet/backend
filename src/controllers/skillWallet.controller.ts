@@ -46,6 +46,7 @@ export class SkillWalletController {
   }
 
   public activateSkillWallet = async (req: any, res: Response) => {
+    console.log('activateSkillWallet', req.params.skillWalletId);
     try {
       if (!req.params.skillWalletId) {
         return res.status(400).send('No skillWalletId passed!');
@@ -142,6 +143,7 @@ export class SkillWalletController {
   }
 
   public validate = async (req: any, res: Response) => {
+    console.log('validate', req.params.skillWalletId);
     try {
       if (!req.params.skillWalletId) {
         return res.status(400).send('No skillWalletId passed!');
@@ -154,9 +156,17 @@ export class SkillWalletController {
       if (!isActive) {
         return res.status(400).send({ message: "Skill Wallet is not activated yet!" });
       } else {
+        console.log('signature', req.body.signature);
+        console.log('skillWalletId', req.params.skillWalletId);
+        console.log('action', req.body.action);
+
         const strParams = req.body.stringParams ?? [];
         const intParams = req.body.intParams ?? [];
         const addressParams = req.body.addressParams ?? [];
+
+        console.log('strParams', strParams)
+        console.log('intParams', intParams)
+        console.log('addressParams', addressParams)
         await SkillWalletContracts.validate(
           req.body.signature,
           req.params.skillWalletId,
@@ -220,9 +230,9 @@ export class SkillWalletController {
       const skillWalletId = req.params.skillWalletId;
       if (!skillWalletId || skillWalletId < 0)
         return res.status(404).send({ message: 'skillWallet is a required field' });
-      
+
       const notifications = await skillWalletService.getNotifications(skillWalletId);
-      res.status(200).send({ notifications } );
+      res.status(200).send({ notifications });
     } catch (err) {
       this.loggerService.error(err);
       res.status(500).send({ error: "Something went wrong, please try again later." });
