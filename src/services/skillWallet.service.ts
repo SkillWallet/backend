@@ -126,7 +126,8 @@ export const findNonce = async (action: Actions, tokenId: string): Promise<numbe
     const actionNumber = +action;
     console.log(actionNumber);
     console.log(typeof (actionNumber));
-    if (action === Actions.Login)
+    console.log(action == Actions.Login);
+    if (action == Actions.Login)
         // TODO: add tokenId
         query = new Where('action').eq(actionNumber).and('isValidated').eq(false);
     else
