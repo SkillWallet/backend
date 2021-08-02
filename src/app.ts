@@ -3,6 +3,7 @@ var bodyParser = require('body-parser')
 import helmet from "helmet";
 import { injectable } from "inversify";
 import {
+  AnalyticsRouter,
   SkillWalletRouter,
 } from "./routers";
 const session = require("express-session");
@@ -15,7 +16,8 @@ export class App {
   private _app: express.Application;
 
   constructor(
-    private skillWalletRouter: SkillWalletRouter
+    private skillWalletRouter: SkillWalletRouter,
+    private analycticsRouter: AnalyticsRouter
   ) {
     this._app = express();
     this.config();
@@ -60,5 +62,6 @@ export class App {
 
   private _initRoutes() {
     this._app.use("/api/skillWallet", this.skillWalletRouter.router);
+    this._app.use("/api/analytics", this.analycticsRouter.router);
   }
 }
