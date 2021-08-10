@@ -12,7 +12,8 @@ export class AnalyticsRouter {
 
   private init(): void {
     // Analytics
-    this._router.get("/totalUsers", this.analyticsController.totalUsers);
+    this._router.get("/activeUsers", this.analyticsController.activeUsers);
+    this._router.get("/newUsers", this.analyticsController.newUsers);
   }
 
   public get router(): Router {
