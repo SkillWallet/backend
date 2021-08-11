@@ -164,9 +164,6 @@ export class SkillWalletController {
         const intParams = req.body.intParams ?? [];
         const addressParams = req.body.addressParams ?? [];
 
-        console.log('strParams', strParams)
-        console.log('intParams', intParams)
-        console.log('addressParams', addressParams)
         await SkillWalletContracts.validate(
           req.body.signature,
           req.params.skillWalletId,

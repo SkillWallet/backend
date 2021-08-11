@@ -124,9 +124,6 @@ export const loginValidation = async (nonce: number, tokenId: string): Promise<b
 export const findNonce = async (action: Actions, tokenId: string): Promise<number[]> => {
     let query = undefined;
     const actionNumber = +action;
-    console.log(actionNumber);
-    console.log(typeof (actionNumber));
-    console.log(action == Actions.Login);
     if (action == Actions.Login)
         // TODO: add tokenId
         query = new Where('action').eq(actionNumber).and('isValidated').eq(false);
@@ -137,7 +134,7 @@ export const findNonce = async (action: Actions, tokenId: string): Promise<numbe
 }
 
 export const getTokenIDAfterLogin = async (nonce: number): Promise<string> => {
-    const query = new Where('nonce').eq(nonce).and('action').eq(Actions.Login).and('isValidated').eq(true);
+    const query = new Where('nonce').eq(+nonce).and('action').eq(1).and('isValidated').eq(true);
     const login = (await threadDBClient.filter(QRCodeAuthCollection, query)) as QRCodeAuth[];
     if (login && login.length > 0) {
         await threadDBClient.delete(QRCodeAuthCollection, query);
@@ -147,7 +144,7 @@ export const getTokenIDAfterLogin = async (nonce: number): Promise<string> => {
 }
 
 export const invalidateNonce = async (nonce: number, tokenId: string, action: Actions): Promise<void> => {
-    const query = new Where('nonce').eq(nonce).and('isValidated').eq(false).and('action').eq(action);
+    const query = new Where('nonce').eq(+nonce).and('isValidated').eq(false).and('action').eq(+action);
     const qrAuths = (await threadDBClient.filter(QRCodeAuthCollection, query)) as QRCodeAuth[];
     qrAuths.forEach(auth => {
         auth.isValidated = true;
