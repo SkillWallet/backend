@@ -21,7 +21,8 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         skills: [],
         currentCommunity: {}
     } as SkillWallet;
-    const isActive = await SkillWalletContracts.isActive(tokenId);
+    // const isActive = await SkillWalletContracts.isActive(tokenId);
+    const isActive = true;
     if (isActive) {
         const jsonUri = await SkillWalletContracts.getTokenURI(tokenId);
         let jsonMetadata = await getJSONFromURI(jsonUri)
@@ -53,8 +54,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         skillWallet.currentCommunity.scarcityScore = 0;
         // skillWallet.diToCredits = await CommunityContracts.getDiToBalance(currentCommunity, userAddress)
         skillWallet.diToCredits = 2060;
-
-
+        skillWallet.tokenId = tokenId;
         return skillWallet;
     } else {
         return undefined;

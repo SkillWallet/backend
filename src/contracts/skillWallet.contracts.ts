@@ -57,6 +57,7 @@ export class SkillWalletContracts {
     public static async isActive(tokenId: string): Promise<boolean> {
         try {
             const contract = skillWalletContract();
+            console.log(tokenId);
             const isActivated = await contract.isSkillWalletActivated(tokenId);
             console.log(isActivated);
             return isActivated;

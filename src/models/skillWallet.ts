@@ -1,4 +1,5 @@
 export interface SkillWallet {
+    tokenId: string;
     nickname: string;
     imageUrl: string;
     diToCredits: number;
