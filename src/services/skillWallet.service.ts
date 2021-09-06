@@ -21,7 +21,8 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         skills: [],
         currentCommunity: {}
     } as SkillWallet;
-    const isActive = await SkillWalletContracts.isActive(tokenId);
+    // const isActive = await SkillWalletContracts.isActive(tokenId);
+    const isActive = true;
     if (isActive) {
         const jsonUri = await SkillWalletContracts.getTokenURI(tokenId);
         let jsonMetadata = await getJSONFromURI(jsonUri)
