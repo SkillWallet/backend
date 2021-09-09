@@ -14,6 +14,16 @@
           "internalType": "address",
           "name": "_addrProvider",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_totalMembersAllowed",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_claimableSkillWallets",
+          "type": "bool"
         }
       ],
       "stateMutability": "nonpayable",
@@ -130,6 +140,19 @@
     },
     {
       "inputs": [],
+      "name": "getMemberAddresses",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "getMembers",
       "outputs": [
         {
@@ -171,6 +194,19 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getSkillWalletAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -265,36 +301,6 @@
     {
       "inputs": [
         {
-          "internalType": "uint64",
-          "name": "displayStringId1",
-          "type": "uint64"
-        },
-        {
-          "internalType": "uint8",
-          "name": "level1",
-          "type": "uint8"
-        },
-        {
-          "internalType": "uint64",
-          "name": "displayStringId2",
-          "type": "uint64"
-        },
-        {
-          "internalType": "uint8",
-          "name": "level2",
-          "type": "uint8"
-        },
-        {
-          "internalType": "uint64",
-          "name": "displayStringId3",
-          "type": "uint64"
-        },
-        {
-          "internalType": "uint8",
-          "name": "level3",
-          "type": "uint8"
-        },
-        {
           "internalType": "string",
           "name": "uri",
           "type": "string"
@@ -321,6 +327,25 @@
       "name": "leave",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "memberAddresses",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
