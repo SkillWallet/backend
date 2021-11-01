@@ -16,6 +16,7 @@ export interface SkillWallet {
     description?: string;
     scarcityScore?: number;
     comScore?: number;
+    repCredits?: number; 
 }
 
  interface Skill {

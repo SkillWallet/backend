@@ -54,13 +54,12 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
             name: jsonCommunityMetadata.title ?? 'DiTo #1',
             description: jsonCommunityMetadata.description,
             scarcityScore: 0,
-            comScore: 1.08
+            comScore: 1.08,
+            repCredits: 2342
         };
 
         skillWallet.currentCommunities.push(currentCommunityModel);
 
-        // skillWallet.diToCredits = await CommunityContracts.getDiToBalance(currentCommunity, userAddress)
-        skillWallet.diToCredits = 2060;
         skillWallet.tokenId = tokenId;
         skillWallet.repScore = 1.3;
         return skillWallet;
