@@ -25,6 +25,17 @@ export class SkillWalletController {
     }
   }
 
+
+  public getInteractions = async (req: any, res: Response) => {
+    try {
+      const interactionNFTs = await skillWalletService.getInteractions(req.params.skillWalletId);
+      return res.status(200).send(interactionNFTs);
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
   public getCommunity = async (req: any, res: Response) => {
     try {
       const skillWallet = await skillWalletService.getCommunityDetails(req.query.address);

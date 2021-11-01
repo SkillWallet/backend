@@ -20,6 +20,8 @@ export class SkillWalletRouter {
     // GET
     this._router.get('/', this.skillWalletController.get);
     this._router.get("/community", this.skillWalletController.getCommunity);
+    this._router.get("/:skillWalletId/interactions", this.skillWalletController.getInteractions);
+    
 
     // External Login
     this._router.get("/hasPendingAuth", this.skillWalletController.hasPendingAuthentication);

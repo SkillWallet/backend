@@ -6,6 +6,7 @@ import {
     PendingActivation,
     CommunityListView,
     Chat,
+    InteractionNFT,
 } from '../models';
 import { SkillWalletContracts } from '../contracts/skillWallet.contracts';
 import { CommunityContracts } from '../contracts/community.contracts';
@@ -63,6 +64,28 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         skillWallet.tokenId = tokenId;
         skillWallet.repScore = 1.3;
         return skillWallet;
+    } else {
+        return undefined;
+    }
+}
+
+
+export const getInteractions = async (tokenId: string): Promise<InteractionNFT[]> => {
+    // const isActive = await SkillWalletContracts.isActive(tokenId);
+    const isActive = true;
+    if (isActive) {
+        return [
+            {
+                image: 'https://hub.textile.io/ipfs/bafkreidr5q62zcsy2ry2nqi6er2iq5ticftusgbj7fedotuz3pxldqrfou ',
+                role: 1,
+                amount: 2
+            },
+            {
+                image: 'https://hub.textile.io/ipfs/bafkreibnuixt3dwsnp6tilkmth75cg7loeurun2udtsoucwotfklwc6ymu',
+                role: 2,
+                amount: 1
+            }
+        ]
     } else {
         return undefined;
     }
