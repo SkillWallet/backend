@@ -3,7 +3,8 @@ export interface SkillWallet {
     nickname: string;
     imageUrl: string;
     diToCredits: number;
-    currentCommunity: CommunityList;
+    repScore: number;
+    currentCommunities: CommunityList[];
     pastCommunities: CommunityList[];
     skills: Skill[];
 }

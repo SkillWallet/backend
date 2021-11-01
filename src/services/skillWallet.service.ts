@@ -19,7 +19,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
     const skillWallet: SkillWallet = {
         pastCommunities: [],
         skills: [],
-        currentCommunity: {}
+        currentCommunities: []
     } as SkillWallet;
     // const isActive = await SkillWalletContracts.isActive(tokenId);
     const isActive = true;
@@ -44,17 +44,23 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         const currentCommunity = await SkillWalletContracts.getCurrentCommunity(tokenId);
         const members = await CommunityContracts.getMembersCount(currentCommunity);
 
-        skillWallet.currentCommunity.address = currentCommunity;
-        skillWallet.currentCommunity.members = members;
         const communityMetadata = await CommunityContracts.getMetadataUri(currentCommunity);
         let jsonCommunityMetadata = await getJSONFromURI(communityMetadata)
 
-        skillWallet.currentCommunity.name = jsonCommunityMetadata.title ?? 'DiTo #1';
-        skillWallet.currentCommunity.description = jsonCommunityMetadata.description ?? 'description description description';
-        skillWallet.currentCommunity.scarcityScore = 0;
+        const currentCommunityModel = {
+            address: currentCommunity,
+            members: members, 
+            name: jsonCommunityMetadata.title ?? 'DiTo #1',
+            description: jsonCommunityMetadata.description,
+            scarcityScore: 0
+        };
+
+        skillWallet.currentCommunities.push(currentCommunityModel);
+
         // skillWallet.diToCredits = await CommunityContracts.getDiToBalance(currentCommunity, userAddress)
         skillWallet.diToCredits = 2060;
         skillWallet.tokenId = tokenId;
+        skillWallet.repScore = 1.3;
         return skillWallet;
     } else {
         return undefined;
