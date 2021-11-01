@@ -52,7 +52,8 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
             members: members, 
             name: jsonCommunityMetadata.title ?? 'DiTo #1',
             description: jsonCommunityMetadata.description,
-            scarcityScore: 0
+            scarcityScore: 0,
+            comScore: 1.08
         };
 
         skillWallet.currentCommunities.push(currentCommunityModel);
