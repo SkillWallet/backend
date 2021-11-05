@@ -79,7 +79,7 @@ export const getInteractions = async (tokenId: string): Promise<InteractionNFT[]
             {
                 image: 'https://hub.textile.io/ipfs/bafkreidr5q62zcsy2ry2nqi6er2iq5ticftusgbj7fedotuz3pxldqrfou',
                 role: 1,
-                amount: 2,
+                amount: 3,
                 title: 'Title',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi.'
 
@@ -87,7 +87,7 @@ export const getInteractions = async (tokenId: string): Promise<InteractionNFT[]
             {
                 image: 'https://hub.textile.io/ipfs/bafkreibnuixt3dwsnp6tilkmth75cg7loeurun2udtsoucwotfklwc6ymu',
                 role: 2,
-                amount: 1,
+                amount: 4,
                 title: 'Title',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi.'
 
