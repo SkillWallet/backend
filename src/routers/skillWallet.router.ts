@@ -23,6 +23,7 @@ export class SkillWalletRouter {
     this._router.get("/:skillWalletId/interactions", this.skillWalletController.getInteractions);
     this._router.get("/:skillWalletId/events", this.skillWalletController.getEvents);
     this._router.get("/:skillWalletId/badges", this.skillWalletController.getBadges);
+    this._router.get("/:skillWalletId/community/:communityAddress/membershipID", this.skillWalletController.getMembershipID);
     
 
     // External Login

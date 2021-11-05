@@ -7,3 +7,4 @@ export * from './notification';
 export * from './interactions';
 export * from './event';
 export * from './badge';
+export * from './membershipID';
