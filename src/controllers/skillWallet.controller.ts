@@ -36,6 +36,29 @@ export class SkillWalletController {
     }
   }
 
+
+  public getEvents = async (req: any, res: Response) => {
+    try {
+      const events = await skillWalletService.getEvents(req.params.skillWalletId);
+      return res.status(200).send(events);
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
+
+
+  public getBadges = async (req: any, res: Response) => {
+    try {
+      const events = await skillWalletService.getBadges(req.params.skillWalletId);
+      return res.status(200).send(events);
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
   public getCommunity = async (req: any, res: Response) => {
     try {
       const skillWallet = await skillWalletService.getCommunityDetails(req.query.address);

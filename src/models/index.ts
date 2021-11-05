@@ -5,3 +5,5 @@ export * from './community';
 export * from './chat';
 export * from './notification';
 export * from './interactions';
+export * from './event';
+export * from './badge';

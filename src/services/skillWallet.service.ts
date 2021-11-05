@@ -7,6 +7,8 @@ import {
     CommunityListView,
     Chat,
     InteractionNFT,
+    EventsList,
+    CommunityBadges,
 } from '../models';
 import { SkillWalletContracts } from '../contracts/skillWallet.contracts';
 import { CommunityContracts } from '../contracts/community.contracts';
@@ -50,7 +52,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
 
         const currentCommunityModel = {
             address: currentCommunity,
-            members: members, 
+            members: members,
             name: jsonCommunityMetadata.title ?? 'DiTo #1',
             description: jsonCommunityMetadata.description,
             scarcityScore: 0,
@@ -77,14 +79,103 @@ export const getInteractions = async (tokenId: string): Promise<InteractionNFT[]
             {
                 image: 'https://hub.textile.io/ipfs/bafkreidr5q62zcsy2ry2nqi6er2iq5ticftusgbj7fedotuz3pxldqrfou ',
                 role: 1,
-                amount: 2
+                amount: 2,
+                title: 'Title',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi.'
+
             },
             {
                 image: 'https://hub.textile.io/ipfs/bafkreibnuixt3dwsnp6tilkmth75cg7loeurun2udtsoucwotfklwc6ymu',
                 role: 2,
-                amount: 1
+                amount: 1,
+                title: 'Title',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi.'
+
             }
         ]
+    } else {
+        return undefined;
+    }
+}
+
+
+
+export const getEvents = async (tokenId: string): Promise<EventsList> => {
+    // const isActive = await SkillWalletContracts.isActive(tokenId);
+    const isActive = true;
+    if (isActive) {
+        return {
+            pastEvents: [
+                {
+                    title: 'Community Call #1',
+                    roles: ['DAO', 'Member', 'Founder'],
+                    credits: 6,
+                },
+                {
+                    title: 'Community Call #2',
+                    roles: ['DAO', 'Member', 'Founder'],
+                    credits: 12,
+                }
+            ],
+            futureEvents: [
+                {
+                    title: 'Community Call #3',
+                    roles: ['DAO', 'Member', 'Founder'],
+                    credits: 6,
+                },
+                {
+                    title: 'Community Call #4',
+                    roles: ['DAO', 'Member', 'Founder'],
+                    credits: 12,
+                }
+            ]
+        }
+    } else {
+        return undefined;
+    }
+}
+
+
+export const getBadges = async (tokenId: string): Promise<CommunityBadges[]> => {
+    // const isActive = await SkillWalletContracts.isActive(tokenId);
+    const isActive = true;
+    if (isActive) {
+        return [
+            {
+                communityName: 'DiTo #1',
+                badges: [
+                    {
+                        title: 'MembershipID',
+                        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi. Cras faucibus mi massa, a rhoncus odio eleifend at. Aliquam imperdiet, felis sit amet ultrices congue, orci purus dignissim lectus, non tincidunt sapien tellus vel ex. Nam rhoncus orci arcu, non posuere mauris aliquet vitae. Donec sit amet tristique tortor. Donec eget purus eget felis gravida eleifend. Vestibulum auctor nec lorem a tristique. Nam malesuada blandit efficitur. Curabitur condimentum lectus sit amet semper iaculis. Suspendisse nec tempus ante. In hac habitasse platea dictumst. In in diam eu massa dignissim iaculis eu eu eros. Maecenas sapien nibh, luctus eget ante nec, aliquam aliquam urna. Phasellus lobortis sem et dolor consectetur, at rhoncus ipsum sollicitudin. Sed placerat quam quam, quis interdum leo tempus rhoncus. Pellentesque erat metus, hendrerit ac viverra sit amet, egestas eget ante. Donec at elit sed velit sagittis commodo sit amet sit amet nisl. Proin justo lorem, lacinia eu tortor ac, aliquam venenatis erat. Mauris egestas eu eros at commodo. Pellentesque tempus ultrices ex, ut ornare ipsum blandit vel. Vivamus iaculis tortor a tortor rutrum, sed aliquam erat eleifend. Morbi cursus, mauris in scelerisque lacinia, elit leo gravida ex, ac facilisis purus enim at felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer semper eros mi, non tincidunt massa sagittis molestie.',
+                        image: 'https://hub.textile.io/ipfs/bafkreibnuixt3dwsnp6tilkmth75cg7loeurun2udtsoucwotfklwc6ymu',
+                    }
+                ]
+
+            },
+            {
+                communityName: 'DiTo #2',
+                badges: [
+                    {
+                        title: 'MembershipID',
+                        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi. Cras faucibus mi massa, a rhoncus odio eleifend at. Aliquam imperdiet, felis sit amet ultrices congue, orci purus dignissim lectus, non tincidunt sapien tellus vel ex. Nam rhoncus orci arcu, non posuere mauris aliquet vitae. Donec sit amet tristique tortor. Donec eget purus eget felis gravida eleifend. Vestibulum auctor nec lorem a tristique. Nam malesuada blandit efficitur. Curabitur condimentum lectus sit amet semper iaculis. Suspendisse nec tempus ante. In hac habitasse platea dictumst. In in diam eu massa dignissim iaculis eu eu eros. Maecenas sapien nibh, luctus eget ante nec, aliquam aliquam urna. Phasellus lobortis sem et dolor consectetur, at rhoncus ipsum sollicitudin. Sed placerat quam quam, quis interdum leo tempus rhoncus. Pellentesque erat metus, hendrerit ac viverra sit amet, egestas eget ante. Donec at elit sed velit sagittis commodo sit amet sit amet nisl. Proin justo lorem, lacinia eu tortor ac, aliquam venenatis erat. Mauris egestas eu eros at commodo. Pellentesque tempus ultrices ex, ut ornare ipsum blandit vel. Vivamus iaculis tortor a tortor rutrum, sed aliquam erat eleifend. Morbi cursus, mauris in scelerisque lacinia, elit leo gravida ex, ac facilisis purus enim at felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer semper eros mi, non tincidunt massa sagittis molestie.',
+                        image: 'https://hub.textile.io/ipfs/bafkreidr5q62zcsy2ry2nqi6er2iq5ticftusgbj7fedotuz3pxldqrfou ',
+                    }
+                ]
+
+            },
+            {
+                communityName: 'DiTo #3',
+                badges: [
+                    {
+                        title: 'MembershipID',
+                        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi. Cras faucibus mi massa, a rhoncus odio eleifend at. Aliquam imperdiet, felis sit amet ultrices congue, orci purus dignissim lectus, non tincidunt sapien tellus vel ex. Nam rhoncus orci arcu, non posuere mauris aliquet vitae. Donec sit amet tristique tortor. Donec eget purus eget felis gravida eleifend. Vestibulum auctor nec lorem a tristique. Nam malesuada blandit efficitur. Curabitur condimentum lectus sit amet semper iaculis. Suspendisse nec tempus ante. In hac habitasse platea dictumst. In in diam eu massa dignissim iaculis eu eu eros. Maecenas sapien nibh, luctus eget ante nec, aliquam aliquam urna. Phasellus lobortis sem et dolor consectetur, at rhoncus ipsum sollicitudin. Sed placerat quam quam, quis interdum leo tempus rhoncus. Pellentesque erat metus, hendrerit ac viverra sit amet, egestas eget ante. Donec at elit sed velit sagittis commodo sit amet sit amet nisl. Proin justo lorem, lacinia eu tortor ac, aliquam venenatis erat. Mauris egestas eu eros at commodo. Pellentesque tempus ultrices ex, ut ornare ipsum blandit vel. Vivamus iaculis tortor a tortor rutrum, sed aliquam erat eleifend. Morbi cursus, mauris in scelerisque lacinia, elit leo gravida ex, ac facilisis purus enim at felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer semper eros mi, non tincidunt massa sagittis molestie.',
+                        image: 'https://hub.textile.io/ipfs/bafkreibnuixt3dwsnp6tilkmth75cg7loeurun2udtsoucwotfklwc6ymu',
+                    }
+                ]
+
+            }
+        ]
+
     } else {
         return undefined;
     }
