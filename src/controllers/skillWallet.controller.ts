@@ -70,15 +70,6 @@ export class SkillWalletController {
     }
   }
 
-  public getCommunity = async (req: any, res: Response) => {
-    try {
-      const skillWallet = await skillWalletService.getCommunityDetails(req.query.address);
-      return res.status(200).send(skillWallet);
-    } catch (err) {
-      this.loggerService.error(err);
-      res.status(500).send({ error: "Something went wrong, please try again later." });
-    }
-  }
 
   public hasPendingAuthentication = async (req: any, res: Response) => {
     try {

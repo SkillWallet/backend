@@ -4,5 +4,8 @@ export interface InteractionNFT {
 	role: number;
     amount: number;
 	title: string;
-	description: string;
+	communityName: string;
+	membershipID: string;
+	date: string;
+
 }

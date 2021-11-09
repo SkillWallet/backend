@@ -82,7 +82,9 @@ export const getInteractions = async (tokenId: string): Promise<InteractionNFT[]
                 role: 1,
                 amount: 3,
                 title: 'Title',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi.'
+                communityName: 'Com name',
+                membershipID: '1',
+                date: 'Nov, 11, 2020', 
 
             },
             {
@@ -90,7 +92,9 @@ export const getInteractions = async (tokenId: string): Promise<InteractionNFT[]
                 role: 2,
                 amount: 4,
                 title: 'Title',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi.'
+                communityName: 'Com name',
+                membershipID: '1',
+                date: 'Nov, 11, 2020', 
 
             }
         ]
@@ -185,14 +189,18 @@ export const getBadges = async (tokenId: string): Promise<CommunityBadges[]> => 
 
 
 export const getMembershipID = async (tokenId: string, communityAddress: string): Promise<MembershipID> => {
-    // const isActive = await SkillWalletContracts.isActive(tokenId);
+    const skillWallet = await getSkillWallet(tokenId);
+    const community = await getCommunityDetails(communityAddress);
     const isActive = true;
     if (isActive) {
         return {
             communityName: 'DiTo #1',
             logoImage: 'https://hub.textile.io/ipfs/bafkreibnuixt3dwsnp6tilkmth75cg7loeurun2udtsoucwotfklwc6ymu',
             membershipNumber: "1",
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi. Cras faucibus mi massa, a rhoncus odio eleifend at. Aliquam imperdiet, felis sit amet ultrices congue, orci purus dignissim lectus, non tincidunt sapien tellus vel ex. Nam rhoncus orci arcu, non posuere mauris aliquet vitae. Donec sit amet tristique tortor. Donec eget purus eget felis gravida eleifend. Vestibulum auctor nec lorem a tristique. Nam malesuada blandit efficitur. Curabitur condimentum lectus sit amet semper iaculis. Suspendisse nec tempus ante. In hac habitasse platea dictumst. In in diam eu massa dignissim iaculis eu eu eros. Maecenas sapien nibh, luctus eget ante nec, aliquam aliquam urna. Phasellus lobortis sem et dolor consectetur, at rhoncus ipsum sollicitudin. Sed placerat quam quam, quis interdum leo tempus rhoncus. Pellentesque erat metus, hendrerit ac viverra sit amet, egestas eget ante. Donec at elit sed velit sagittis commodo sit amet sit amet nisl. Proin justo lorem, lacinia eu tortor ac, aliquam venenatis erat. Mauris egestas eu eros at commodo. Pellentesque tempus ultrices ex, ut ornare ipsum blandit vel. Vivamus iaculis tortor a tortor rutrum, sed aliquam erat eleifend. Morbi cursus, mauris in scelerisque lacinia, elit leo gravida ex, ac facilisis purus enim at felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer semper eros mi, non tincidunt massa sagittis molestie.',
+            communnityDescription: community.description,
+            about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi. Cras faucibus mi massa, a rhoncus odio eleifend at. Aliquam imperdiet, felis sit amet ultrices congue, orci purus dignissim lectus, non tincidunt sapien tellus vel ex. Nam rhoncus orci arcu, non posuere mauris aliquet vitae.',
+            owner: skillWallet.nickname,
+            date: 'Nov, 13, 2021'
         }
     } else {
         return undefined;
@@ -200,28 +208,21 @@ export const getMembershipID = async (tokenId: string, communityAddress: string)
 }
 
 
-export const getCommunityDetails = async (userAddress: string): Promise<CommunityListView> => {
-    const isActive = await SkillWalletContracts.isActive(userAddress);
-    const tokenId = await SkillWalletContracts.getSkillWalletIdByOwner(userAddress);
-    if (isActive) {
-        const currentCommunity = await SkillWalletContracts.getCurrentCommunity(tokenId);
+export const getCommunityDetails = async (communityAddress: string): Promise<CommunityListView> => {
 
-        const members = await CommunityContracts.getMembersCount(currentCommunity);
-        const communityMetadataUrl = await CommunityContracts.getMetadataUri(currentCommunity);
-        let communityMetadata = await getJSONFromURI(communityMetadataUrl)
-        const name = communityMetadata.title ?? 'DiTo #1';
-        const description = communityMetadata.description ?? 'description description description';
-        return {
-            members,
-            name,
-            scarcityScore: 0,
-            description,
-            address: currentCommunity
-        };
+    const members = await CommunityContracts.getMembersCount(communityAddress);
+    const communityMetadataUrl = await CommunityContracts.getMetadataUri(communityAddress);
+    let communityMetadata = await getJSONFromURI(communityMetadataUrl)
+    const name = communityMetadata.title ?? 'DiTo #1';
+    const description = communityMetadata.description ?? 'description description description';
+    return {
+        members,
+        name,
+        scarcityScore: 0,
+        description,
+        address: communityAddress
+    };
 
-    } else {
-        return undefined;
-    }
 }
 
 export const hasPendingActivation = async (userAddress: string): Promise<boolean> => {
