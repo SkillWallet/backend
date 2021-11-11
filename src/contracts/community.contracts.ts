@@ -50,6 +50,19 @@ export class CommunityContracts {
     }
   }
 
+
+  public static async getMembers(
+    address: string
+  ) {
+    try {
+      const contract = communityContract(address);
+      const members = await contract.getMembers();
+      return members;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   public static async getTemplate(
     address: string
   ) {

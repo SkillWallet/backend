@@ -9,6 +9,12 @@ export interface SkillWallet {
     skills: Skill[];
 }
 
+export interface SkillWalletList {
+    tokenId: string;
+    nickname: string;
+    imageUrl: string;
+}
+
  interface CommunityList {
     name: string;
     address: string;
