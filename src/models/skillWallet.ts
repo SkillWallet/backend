@@ -14,6 +14,10 @@ export interface SkillWalletList {
     nickname: string;
     imageUrl: string;
 }
+export interface SkillWalletListPerRole {
+    role: string;
+    skillWallets: SkillWalletList[];
+}
 
  interface CommunityList {
     name: string;

@@ -11,7 +11,7 @@ export class CommunityController {
 
   public get = async (req: any, res: Response) => {
     try {
-      const skillWallets = await communityService.getSkillWalletsPerCommunity(req.params.communityAddress, req.query.role);
+      const skillWallets = await communityService.getSkillWalletsPerCommunity(req.params.communityAddress);
       return res.status(200).send(skillWallets);
     } catch (err) {
       this.loggerService.error(err);
