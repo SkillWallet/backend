@@ -26,6 +26,19 @@ export class SkillWalletController {
   }
 
 
+  public getConfig = async (req: any, res: Response) => {
+    try {
+      return res.status(200).send({
+        skillWalletAddress: process.env.SKILL_WALLET_ADDRESS,
+        rpc: process.env.MUMBAI_RPC_PROVIDER
+      });
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
+
   public getInteractions = async (req: any, res: Response) => {
     try {
       const interactionNFTs = await skillWalletService.getInteractions(req.params.skillWalletId);

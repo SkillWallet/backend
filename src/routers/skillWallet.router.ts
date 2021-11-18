@@ -17,6 +17,7 @@ export class SkillWalletRouter {
     this._router.post("/:skillWalletId/pubKey", this.skillWalletController.addPubKeyToSkillWallet);
     this._router.post("/:skillWalletId/validate", this.skillWalletController.validate);
 
+    
     // GET
     this._router.get('/', this.skillWalletController.get);
     this._router.get("/:skillWalletId/interactions", this.skillWalletController.getInteractions);
@@ -40,6 +41,10 @@ export class SkillWalletRouter {
 
     // Notifications
     this._router.get("/:skillWalletId/notifications", this.skillWalletController.getNotifications);
+
+    // Config
+    this._router.get("/config", this.skillWalletController.getConfig);
+
   }
 
   public get router(): Router {
