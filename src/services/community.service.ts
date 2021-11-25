@@ -11,11 +11,12 @@ export const getSkillWalletsPerCommunity = async (communityAddress: string): Pro
 
     const communityUri = await CommunityContracts.getMetadataUri(communityAddress);
     const communityMetadata = await getJSONFromURI(communityUri);
-    console.log(communityMetadata.properties.roles);
-
-    for (let i = 0; i < communityMetadata.properties.roles.length; i++) {
-        skillWalletsResponse[communityMetadata.properties.roles[i]] = [];
+    for(let key in communityMetadata.roles) {
+        skillWalletsResponse[communityMetadata.roles[key].roleName] = [];
     }
+    skillWalletsResponse['Founder'] = [];
+    skillWalletsResponse['Contributor'] = [];
+    skillWalletsResponse['Investor'] = [];
 
     const memberIds = await CommunityContracts.getMembers(communityAddress) as string[];
 
