@@ -22,11 +22,12 @@ export const getSkillWalletsPerCommunity = async (communityAddress: string, core
     for (let i = 0; i < memberIds.length; i++) {
         let tokenId = memberIds[i];
         const isActive = await SkillWalletContracts.isActive(tokenId);
+        console.log('tokenID', tokenId);
         if (isActive) {
             const jsonUri = await SkillWalletContracts.getTokenURI(tokenId);
             let jsonMetadata = await getJSONFromURI(jsonUri)
             const skills = jsonMetadata.properties.skills as any[];
-            if (filteredRoles.findIndex(c => c == skills[0].name) > -1) {
+            if (skills && filteredRoles.findIndex(c => c == skills[0].name) > -1) {
                 skillWalletsResponse[skills[0].name].push({
                     tokenId: tokenId.toString(),
                     imageUrl: jsonMetadata.image,
