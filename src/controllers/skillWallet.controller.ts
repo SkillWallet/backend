@@ -38,7 +38,18 @@ export class SkillWalletController {
     }
   }
 
-
+  public authenticatePartnersApp = async (req: any, res: Response) => {
+    try {
+      if(req.headers["authorization"] == process.env.PARTNERS_APP_ACCESS_CODE) {
+        return res.status(200).send({ message: "Valid access key!"});
+      } else {
+        return res.status(403).send({ message: "Invalid access key!"})
+      }
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
   public getInteractions = async (req: any, res: Response) => {
     try {
       const interactionNFTs = await skillWalletService.getInteractions(req.params.skillWalletId);

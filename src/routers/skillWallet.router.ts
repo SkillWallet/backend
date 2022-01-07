@@ -44,6 +44,7 @@ export class SkillWalletRouter {
 
     // Config
     this._router.get("/config", this.skillWalletController.getConfig);
+    this._router.post("/access", this.skillWalletController.authenticatePartnersApp);
 
   }
 

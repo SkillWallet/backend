@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --resolveJsonModule",
     "dev": "npm install && nodemon",
-    "start": "npm run build && node ./dist/server.js",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider; npm run build && node ./dist/server.js",
     "testFlow": "npm run build && node ./dist/testFlow.js",
     "test": "mocha -r ts-node/register --timeout 40000 test/*.spec.ts"
   },
