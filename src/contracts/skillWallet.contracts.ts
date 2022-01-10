@@ -1,5 +1,5 @@
 import { Actions } from '../models';
-import { skillWalletContract } from './index';
+import { skillWalletContract, osmContract } from './index';
 
 export class SkillWalletContracts {
 
@@ -103,15 +103,16 @@ export class SkillWalletContracts {
 
     public static async validate(signature: string, tokenId: string, action: Actions, stringParams: [], intParams: [], addressParams: []): Promise<void> {
         const contractInst = skillWalletContract();
+        const osmAddr = contractInst.getOSMAddress();
+        const osmInst = osmContract(osmAddr);
 
-        let createTx = await contractInst.validate(
+        let createTx = await osmInst.validate(
             signature,
             tokenId,
             action,
             stringParams,
             intParams,
             addressParams
-            // {gasLimit: 12000000 }
         );
 
         // Wait for transaction to finish
