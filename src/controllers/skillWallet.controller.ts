@@ -61,6 +61,16 @@ export class SkillWalletController {
   }
 
 
+  public getTasks = async (req: any, res: Response) => {
+    try {
+      const events = await skillWalletService.getTasks(req.query.activitiesAddress);
+      return res.status(200).send(events);
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
   public getEvents = async (req: any, res: Response) => {
     try {
       const events = await skillWalletService.getEvents(req.params.skillWalletId);
