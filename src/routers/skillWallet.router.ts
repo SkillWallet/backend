@@ -22,6 +22,7 @@ export class SkillWalletRouter {
     this._router.get('/', this.skillWalletController.get);
     this._router.get("/:skillWalletId/interactions", this.skillWalletController.getInteractions);
     this._router.get("/:skillWalletId/events", this.skillWalletController.getEvents);
+    this._router.get("/:skillWalletId/tasks", this.skillWalletController.getTasks);
     this._router.get("/:skillWalletId/badges", this.skillWalletController.getBadges);
     this._router.get("/:skillWalletId/community/:communityAddress/membershipID", this.skillWalletController.getMembershipID);
     

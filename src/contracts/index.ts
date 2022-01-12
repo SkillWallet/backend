@@ -1,6 +1,7 @@
 import community from './abis/Community.json';
 import skillWallet from './abis/SkillWallet.json';
 import osm from './abis/OSM.json';
+import activities from './abis/Activities.json';
 
 import { ethers, provider, signer } from '../tools/ethers';
 
@@ -23,6 +24,20 @@ export const communityContract = (address) => {
     let contract = new ethers.Contract(
       address,
       community.abi,
+      signer,
+    );
+    return contract;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+export const activitiesContract = (address) => {
+  try {
+    let contract = new ethers.Contract(
+      address,
+      activities.abi,
       signer,
     );
     return contract;

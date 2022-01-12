@@ -10,13 +10,21 @@ import {
     EventsList,
     CommunityBadges,
     MembershipID,
+    Task,
+    Type
 } from '../models';
 import { SkillWalletContracts } from '../contracts/skillWallet.contracts';
 import { CommunityContracts } from '../contracts/community.contracts';
 import { Where } from '@textile/hub';
 import threadDBClient from '../threaddb.config';
-import { ChatCollection, NotificationCollection, PendingSWActivationCollection, QRCodeAuthCollection } from '../constants/constants';
+import { 
+    ChatCollection, 
+    QRCodeAuthCollection,
+    NotificationCollection, 
+    PendingSWActivationCollection, 
+} from '../constants/constants';
 import { getJSONFromURI, getNonce } from '../utils/helpers';
+import { ActivityContracts } from '../contracts/activities.contracts';
 
 export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
 
@@ -84,7 +92,7 @@ export const getInteractions = async (tokenId: string): Promise<InteractionNFT[]
                 title: 'Title',
                 communityName: 'Com name',
                 membershipID: '1',
-                date: 'Nov, 11, 2020', 
+                date: 'Nov, 11, 2020',
 
             },
             {
@@ -94,7 +102,7 @@ export const getInteractions = async (tokenId: string): Promise<InteractionNFT[]
                 title: 'Title',
                 communityName: 'Com name',
                 membershipID: '1',
-                date: 'Nov, 11, 2020', 
+                date: 'Nov, 11, 2020',
 
             }
         ]
@@ -138,6 +146,25 @@ export const getEvents = async (tokenId: string): Promise<EventsList> => {
     } else {
         return undefined;
     }
+}
+
+export const getTasks = async (activityAddress: string): Promise<Task[]> => {
+    const activityIds = await ActivityContracts.getActivities(activityAddress, Type.CoreTeamTask);
+    console.log('activityIds', activityIds)
+    const tasks = [];
+
+    for (var i = 0; i < activityIds.length; i++) {
+        const task = await ActivityContracts.getTaskById(activityAddress, activityIds[i]);
+        tasks.push({
+            activityId: task.activityId.toString(),
+            createdOn: task.createdOn.toString(),
+            status: task.status,
+            creator: task.creator.toString(),
+            taker: task.taker.toString()
+        })
+    }
+
+    return tasks;
 }
 
 
