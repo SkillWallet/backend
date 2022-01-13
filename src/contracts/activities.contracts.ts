@@ -29,4 +29,13 @@ export class ActivityContracts {
     }
   }
 
+  public static async getTokenURI(activityAddress: string, tokenId: string): Promise<string> {
+    try {
+      const contract = activitiesContract(activityAddress);
+      const uri = await contract.tokenURI(tokenId);
+      return uri;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }

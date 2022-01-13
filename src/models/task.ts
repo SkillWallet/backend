@@ -5,6 +5,9 @@ export interface Task {
     status: TaskStatus;
     creator: string;
     taker: string;
+    title: string;
+    description: string;
+    isCoreTeamMembersOnly: boolean;
 }
 
 export enum Type {
