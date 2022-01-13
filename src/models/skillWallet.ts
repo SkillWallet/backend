@@ -8,7 +8,12 @@ export interface SkillWallet {
     pastCommunities: CommunityList[];
     skills: Skill[];
 }
-
+export interface SkillWalletTask {
+    tokenId: string;
+    nickname: string;
+    imageUrl: string;
+    timestamp: string;
+}
 export interface SkillWalletList {
     tokenId: string;
     nickname: string;
