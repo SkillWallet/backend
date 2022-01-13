@@ -150,17 +150,20 @@ export const getEvents = async (tokenId: string): Promise<EventsList> => {
 
 export const getTasks = async (activityAddress: string): Promise<Task[]> => {
     const activityIds = await ActivityContracts.getActivities(activityAddress, Type.CoreTeamTask);
-    console.log('activityIds', activityIds)
     const tasks = [];
 
     for (var i = 0; i < activityIds.length; i++) {
+        const tokenUri = await ActivityContracts.getTokenURI(activityAddress, activityIds[i]);
+        let jsonMetadata = await getJSONFromURI(tokenUri)
         const task = await ActivityContracts.getTaskById(activityAddress, activityIds[i]);
         tasks.push({
             activityId: task.activityId.toString(),
             createdOn: task.createdOn.toString(),
             status: task.status,
             creator: task.creator.toString(),
-            taker: task.taker.toString()
+            taker: task.taker.toString(),
+            description: jsonMetadata.properties.description,
+            isCoreTeamMembersOnly: jsonMetadata.properties.isCoreTeamMembersOnly
         })
     }
 
