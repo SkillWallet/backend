@@ -1,3 +1,4 @@
+import { SkillWalletTask } from "./skillWallet";
 
 export interface Task {
     activityId: number;
@@ -8,6 +9,11 @@ export interface Task {
     title: string;
     description: string;
     isCoreTeamMembersOnly: boolean;
+}
+
+export interface TaskDetails {
+    task: Task;
+    taker: SkillWalletTask;
 }
 
 export enum Type {

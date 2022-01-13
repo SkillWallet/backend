@@ -11,17 +11,18 @@ import {
     CommunityBadges,
     MembershipID,
     Task,
-    Type
+    Type,
+    TaskDetails
 } from '../models';
 import { SkillWalletContracts } from '../contracts/skillWallet.contracts';
 import { CommunityContracts } from '../contracts/community.contracts';
 import { Where } from '@textile/hub';
 import threadDBClient from '../threaddb.config';
-import { 
-    ChatCollection, 
+import {
+    ChatCollection,
     QRCodeAuthCollection,
-    NotificationCollection, 
-    PendingSWActivationCollection, 
+    NotificationCollection,
+    PendingSWActivationCollection,
 } from '../constants/constants';
 import { getJSONFromURI, getNonce } from '../utils/helpers';
 import { ActivityContracts } from '../contracts/activities.contracts';
@@ -168,6 +169,42 @@ export const getTasks = async (activityAddress: string): Promise<Task[]> => {
     }
 
     return tasks;
+}
+
+export const getTaskById = async (activityAddress: string, activityID: string): Promise<TaskDetails> => {
+    const activity = await ActivityContracts.getTaskById(activityAddress, activityID);
+    console.log(activity);
+
+    const tokenUri = await ActivityContracts.getTokenURI(activityAddress, activityID);
+    let jsonMetadata = await getJSONFromURI(tokenUri)
+    const task = await ActivityContracts.getTaskById(activityAddress, activityID);
+
+    const taskDetails: TaskDetails = { task: undefined, taker: undefined };
+    taskDetails.task = {
+        activityId: task.activityId.toString(),
+        createdOn: task.createdOn.toString(),
+        status: task.status,
+        creator: task.creator.toString(),
+        taker: task.taker.toString(),
+        description: jsonMetadata.properties.description,
+        title: jsonMetadata.properties.description,
+        isCoreTeamMembersOnly: jsonMetadata.properties.isCoreTeamMembersOnly
+    };
+
+    if (taskDetails.task.status > 0) {
+        const takerTokenId = await SkillWalletContracts.getSkillWalletIdByOwner(taskDetails.task.taker);
+        const jsonUri = await SkillWalletContracts.getTokenURI(takerTokenId);
+        let jsonMetadata = await getJSONFromURI(jsonUri)
+        taskDetails.taker = {
+            tokenId: takerTokenId,
+            imageUrl: jsonMetadata.image,
+            nickname: jsonMetadata.properties.username,
+            timestamp: undefined
+        }
+    }
+
+    return taskDetails;
+
 }
 
 
