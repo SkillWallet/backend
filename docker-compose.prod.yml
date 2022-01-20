@@ -11,11 +11,10 @@ services:
       - .:/app
     working_dir: /app
     environment:
-      - ENVIRONMENT_IP=3.250.29.111
-      - SERVER_PORT=4005
+      - SERVER_PORT=4006
       - NODE_ENV=production
     ports:
-      - "4005:4005"
+      - "4006:4006"
     command: /bin/bash -c 'yarn; yarn start;'
     networks:
       - skill-wallet
