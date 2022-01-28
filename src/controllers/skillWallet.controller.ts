@@ -140,6 +140,7 @@ export class SkillWalletController {
         return res.status(400).send({ message: "Skill Wallet already activated" });
       } else {
         console.log('activating SW');
+        console.log('sig', req.body.signature);
         await SkillWalletContracts.validate(req.body.signature, req.params.skillWalletId, Actions.Activate, [], [], []);
         return res.status(200).send({ message: "Skill Wallet activated successfully." });
       }
