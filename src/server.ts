@@ -13,6 +13,8 @@ const application = container.get<App>(App);
 const logger = container.get<LoggerService>(LoggerService);
 
 application.app.listen(PORT,async  () => {
+  console.log(process.env.MUMBAI_RPC_PROVIDER);
+  console.log(process.env.SKILL_WALLET_ADDRESS);
   logger.info("ThreadDB initialized");
   logger.info("SkillWallet API is listening on port " + PORT);
 });
