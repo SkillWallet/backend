@@ -41,7 +41,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         let jsonMetadata = await getJSONFromURI(jsonUri)
         skillWallet.imageUrl = jsonMetadata.image;
         skillWallet.nickname = jsonMetadata.properties.username;
-        skillWallet.skills = jsonMetadata.properties.skills;
+        skillWallet.skills = jsonMetadata.properties.skills || jsonMetadata.properties.roles;
 
         const oldCommunityAddresses: string[] = await SkillWalletContracts.getCommunityHistory(tokenId);
         oldCommunityAddresses.forEach(async address => {
