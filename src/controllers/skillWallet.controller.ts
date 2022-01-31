@@ -127,27 +127,33 @@ export class SkillWalletController {
   }
 
   public activateSkillWallet = async (req: any, res: Response) => {
-    console.log('activateSkillWallet', req.params.skillWalletId);
-    try {
-      if (!req.params.skillWalletId) {
-        return res.status(400).send('No skillWalletId passed!');
-      } if (!req.body.signature) {
-        return res.status(400).send('No signature passed');
-      }
-      const isActive = await SkillWalletContracts.isActive(req.params.skillWalletId);
-      if (isActive) {
-        console.log('skill wallet active');
-        return res.status(400).send({ message: "Skill Wallet already activated" });
-      } else {
-        console.log('activating SW');
-        console.log('sig', req.body.signature);
-        await SkillWalletContracts.validate(req.body.signature, req.params.skillWalletId, Actions.Activate, [], [], []);
-        return res.status(200).send({ message: "Skill Wallet activated successfully." });
-      }
-    } catch (err) {
-      this.loggerService.error(err);
-      res.status(500).send({ error: "Something went wrong, please try again later." });
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
     }
+    await sleep(10000);
+    return res.status(200).send({ message: "Skill Wallet activated successfully." });
+
+    // console.log('activateSkillWallet', req.params.skillWalletId);
+    // try {
+    //   if (!req.params.skillWalletId) {
+    //     return res.status(400).send('No skillWalletId passed!');
+    //   } if (!req.body.signature) {
+    //     return res.status(400).send('No signature passed');
+    //   }
+    //   const isActive = await SkillWalletContracts.isActive(req.params.skillWalletId);
+    //   if (isActive) {
+    //     console.log('skill wallet active');
+    //     return res.status(400).send({ message: "Skill Wallet already activated" });
+    //   } else {
+    //     console.log('activating SW');
+    //     console.log('sig', req.body.signature);
+    //     await SkillWalletContracts.validate(req.body.signature, req.params.skillWalletId, Actions.Activate, [], [], []);
+    //     return res.status(200).send({ message: "Skill Wallet activated successfully." });
+    //   }
+    // } catch (err) {
+    //   this.loggerService.error(err);
+    //   res.status(500).send({ error: "Something went wrong, please try again later." });
+    // }
   }
 
   public isActive = async (req: any, res: Response) => {
