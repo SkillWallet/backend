@@ -4,6 +4,7 @@ import { container } from "./inversify.config";
 
 import { App } from "./app";
 import { LoggerService } from "./services/logger.service";
+import { SkillWalletContracts } from "./contracts/skillWallet.contracts"
 
 // initialize configuration
 dotenv.config();

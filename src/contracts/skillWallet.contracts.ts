@@ -103,7 +103,8 @@ export class SkillWalletContracts {
 
     public static async validate(signature: string, tokenId: string, action: Actions, stringParams: [], intParams: [], addressParams: []): Promise<void> {
         const contractInst = skillWalletContract();
-        const osmAddr = contractInst.getOSMAddress();
+        const osmAddr = await contractInst.getOSMAddress();
+        console.log(osmAddr);
         const osmInst = osmContract(osmAddr);
 
         let createTx = await osmInst.validate(
@@ -112,7 +113,7 @@ export class SkillWalletContracts {
             action,
             stringParams,
             intParams,
-            addressParams
+            addressParams,
         );
 
         // Wait for transaction to finish

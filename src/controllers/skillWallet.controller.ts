@@ -40,10 +40,10 @@ export class SkillWalletController {
 
   public authenticatePartnersApp = async (req: any, res: Response) => {
     try {
-      if(req.headers["authorization"] == process.env.PARTNERS_APP_ACCESS_CODE) {
-        return res.status(200).send({ message: "Valid access key!"});
+      if (req.headers["authorization"] == process.env.PARTNERS_APP_ACCESS_CODE) {
+        return res.status(200).send({ message: "Valid access key!" });
       } else {
-        return res.status(403).send({ message: "Invalid access key!"})
+        return res.status(403).send({ message: "Invalid access key!" })
       }
     } catch (err) {
       this.loggerService.error(err);
@@ -210,14 +210,19 @@ export class SkillWalletController {
       this.loggerService.info('adding public key to skill wallet');
       const pubKey = req.body.pubKey;
       const skillWalletId = req.params.skillWalletId;
-      if (!pubKey)
-        return res.status(400).send({ message: 'pubKey is a required field' })
-      if (!skillWalletId || skillWalletId < 0) {
-        res.status(404).send({ message: 'skillWallet is a required field' });
-      } else {
-        await SkillWalletContracts.addPubKeyToSkillWallet(skillWalletId, pubKey);
-        res.status(200).send({ message: 'Successfully added pubKey to SW.' });
+      // if (!pubKey)
+      //   return res.status(400).send({ message: 'pubKey is a required field' })
+      // if (!skillWalletId || skillWalletId < 0) {
+      //   res.status(404).send({ message: 'skillWallet is a required field' });
+      // } else {
+      // await SkillWalletContracts.addPubKeyToSkillWallet(skillWalletId, pubKey);
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
       }
+      await sleep(10000);
+
+      res.status(200).send({ message: 'Successfully added pubKey to SW.' });
+      // }
     } catch (err) {
       this.loggerService.error(err);
       res.status(500).send({ error: "Something went wrong, please try again later." });
@@ -227,38 +232,43 @@ export class SkillWalletController {
   public validate = async (req: any, res: Response) => {
     console.log('validate', req.params.skillWalletId);
     try {
-      if (!req.params.skillWalletId) {
-        return res.status(400).send('No skillWalletId passed!');
-      } if (!req.body.signature) {
-        return res.status(400).send('No signature passed');
-      } if (!req.body.action) {
-        return res.status(400).send('No action passed');
-      }
-      const isActive = await SkillWalletContracts.isActive(req.params.skillWalletId);
-      if (!isActive) {
-        return res.status(400).send({ message: "Skill Wallet is not activated yet!" });
-      } else {
-        console.log('signature', req.body.signature);
-        console.log('skillWalletId', req.params.skillWalletId);
-        console.log('action', req.body.action);
+      //   if (!req.params.skillWalletId) {
+      //     return res.status(400).send('No skillWalletId passed!');
+      //   } if (!req.body.signature) {
+      //     return res.status(400).send('No signature passed');
+      //   } if (!req.body.action) {
+      //     return res.status(400).send('No action passed');
+      //   }
+      //   const isActive = await SkillWalletContracts.isActive(req.params.skillWalletId);
+      //   if (!isActive) {
+      //     return res.status(400).send({ message: "Skill Wallet is not activated yet!" });
+      //   } else {
+      //     console.log('signature', req.body.signature);
+      //     console.log('skillWalletId', req.params.skillWalletId);
+      //     console.log('action', req.body.action);
 
-        const strParams = req.body.stringParams ?? [];
-        const intParams = req.body.intParams ?? [];
-        const addressParams = req.body.addressParams ?? [];
+      //     const strParams = req.body.stringParams ?? [];
+      //     const intParams = req.body.intParams ?? [];
+      //     const addressParams = req.body.addressParams ?? [];
 
-        console.log('strParams', strParams)
-        console.log('intParams', intParams)
-        console.log('addressParams', addressParams)
-        await SkillWalletContracts.validate(
-          req.body.signature,
-          req.params.skillWalletId,
-          req.body.action,
-          strParams,
-          intParams,
-          addressParams
-        );
-        return res.status(200).send({ message: "Validation requested." });
+      //     console.log('strParams', strParams)
+      //     console.log('intParams', intParams)
+      //     console.log('addressParams', addressParams)
+      //     await SkillWalletContracts.validate(
+      //       req.body.signature,
+      //       req.params.skillWalletId,
+      //       req.body.action,
+      //       strParams,
+      //       intParams,
+      //       addressParams
+      //     );
+
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
       }
+      await sleep(10000);
+      return res.status(200).send({ message: "Validation requested." });
+      // }
     } catch (err) {
       this.loggerService.error(err);
       res.status(500).send({ error: "Something went wrong, please try again later." });
