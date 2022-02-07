@@ -1,10 +1,14 @@
 
 import {
+    CoreTeamMemberName,
     SkillWalletList,
 } from '../models';
 import { SkillWalletContracts } from '../contracts/skillWallet.contracts';
 import { CommunityContracts } from '../contracts/community.contracts';
 import { getJSONFromURI, ipfsCIDToHttpUrl } from '../utils/helpers';
+import { Where } from '@textile/hub';
+import threadDBClient from '../threaddb.config';
+import { CoreTeamMemberNamesCollection } from '../constants/constants';
 
 export const getSkillWalletsPerCommunity = async (communityAddress: string, coreTeamMembers: boolean): Promise<any> => {
     let skillWalletsResponse: { [role: string]: SkillWalletList[] } = {};
@@ -42,3 +46,22 @@ export const getSkillWalletsPerCommunity = async (communityAddress: string, core
     return skillWalletsResponse;
 }
 
+export const addCoreTeamMemberName = async (communityAddress: string, memberAddress: string, memberName: string) => {
+    const query = new Where('communityAddress').eq(communityAddress).and('memberAddress').eq(memberAddress);
+    const coreTeamMemberNames = (await threadDBClient.filter(CoreTeamMemberNamesCollection, query)) as CoreTeamMemberName[];
+
+    if (coreTeamMemberNames.length > 0)
+        return
+    const coreTeamMemberNicknameModel: CoreTeamMemberName = {
+        _id: undefined,
+        communityAddress,
+        memberAddress,
+        memberName,
+    }
+    await threadDBClient.insert(CoreTeamMemberNamesCollection, coreTeamMemberNicknameModel);
+}
+
+export const getCoreTeamMemberNames = async (communityAddress: string) => {
+    const query = new Where('communityAddress').eq(communityAddress);
+    return await threadDBClient.filter(CoreTeamMemberNamesCollection, query) as CoreTeamMemberName[];
+}
