@@ -22,9 +22,8 @@ import {
     ChatCollection,
     QRCodeAuthCollection,
     NotificationCollection,
-    PendingSWActivationCollection,
 } from '../constants/constants';
-import { getJSONFromURI, getNonce } from '../utils/helpers';
+import { getJSONFromURI, getNonce, ipfsCIDToHttpUrl } from '../utils/helpers';
 import { ActivityContracts } from '../contracts/activities.contracts';
 
 export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
@@ -34,18 +33,19 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         skills: [],
         currentCommunities: []
     } as SkillWallet;
-    // const isActive = await SkillWalletContracts.isActive(tokenId);
-    const isActive = true;
+    const isActive = await SkillWalletContracts.isActive(tokenId);
     if (isActive) {
-        const jsonUri = await SkillWalletContracts.getTokenURI(tokenId);
+        const jsonUriCID = await SkillWalletContracts.getTokenURI(tokenId);
+        const jsonUri = ipfsCIDToHttpUrl(jsonUriCID, true);
         let jsonMetadata = await getJSONFromURI(jsonUri)
-        skillWallet.imageUrl = jsonMetadata.properties.avatar || jsonMetadata.image;
+        skillWallet.imageUrl = ipfsCIDToHttpUrl(jsonMetadata.properties.avatar || jsonMetadata.image, false);
         skillWallet.nickname = jsonMetadata.properties.username;
         skillWallet.skills = jsonMetadata.properties.skills || jsonMetadata.properties.roles;
 
         const oldCommunityAddresses: string[] = await SkillWalletContracts.getCommunityHistory(tokenId);
         oldCommunityAddresses.forEach(async address => {
-            const communityMetadata = await CommunityContracts.getMetadataUri(address);
+            const communityMetadataCID = await CommunityContracts.getMetadataUri(address);
+            const communityMetadata = ipfsCIDToHttpUrl(communityMetadataCID, true);
             let jsonOldCommunityMetadata = await getJSONFromURI(communityMetadata)
             console.log(communityMetadata);
             skillWallet.pastCommunities.push({
@@ -57,7 +57,8 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
         const currentCommunity = await SkillWalletContracts.getCurrentCommunity(tokenId);
         const members = await CommunityContracts.getMembersCount(currentCommunity);
 
-        const communityMetadata = await CommunityContracts.getMetadataUri(currentCommunity);
+        const communityMetadataCID = await CommunityContracts.getMetadataUri(currentCommunity);
+        const communityMetadata = ipfsCIDToHttpUrl(communityMetadataCID, true);
         let jsonCommunityMetadata = await getJSONFromURI(communityMetadata)
 
         const currentCommunityModel = {
@@ -86,26 +87,26 @@ export const getInteractions = async (tokenId: string): Promise<InteractionNFT[]
     const isActive = true;
     if (isActive) {
         return [
-            {
-                image: 'https://hub.textile.io/ipfs/bafkreidr5q62zcsy2ry2nqi6er2iq5ticftusgbj7fedotuz3pxldqrfou',
-                role: 1,
-                amount: 3,
-                title: 'Title',
-                communityName: 'Com name',
-                membershipID: '1',
-                date: 'Nov, 11, 2020',
+            // {
+            //     image: 'https://hub.textile.io/ipfs/bafkreidr5q62zcsy2ry2nqi6er2iq5ticftusgbj7fedotuz3pxldqrfou',
+            //     role: 1,
+            //     amount: 3,
+            //     title: 'Title',
+            //     communityName: 'Com name',
+            //     membershipID: '1',
+            //     date: 'Nov, 11, 2020',
 
-            },
-            {
-                image: 'https://hub.textile.io/ipfs/bafkreibnuixt3dwsnp6tilkmth75cg7loeurun2udtsoucwotfklwc6ymu',
-                role: 2,
-                amount: 4,
-                title: 'Title',
-                communityName: 'Com name',
-                membershipID: '1',
-                date: 'Nov, 11, 2020',
+            // },
+            // {
+            //     image: 'https://hub.textile.io/ipfs/bafkreibnuixt3dwsnp6tilkmth75cg7loeurun2udtsoucwotfklwc6ymu',
+            //     role: 2,
+            //     amount: 4,
+            //     title: 'Title',
+            //     communityName: 'Com name',
+            //     membershipID: '1',
+            //     date: 'Nov, 11, 2020',
 
-            }
+            // }
         ]
     } else {
         return undefined;
@@ -120,28 +121,28 @@ export const getEvents = async (tokenId: string): Promise<EventsList> => {
     if (isActive) {
         return {
             pastEvents: [
-                {
-                    title: 'Community Call #1',
-                    roles: ['DAO', 'Member', 'Founder'],
-                    credits: 6,
-                },
-                {
-                    title: 'Community Call #2',
-                    roles: ['DAO', 'Member', 'Founder'],
-                    credits: 12,
-                }
+                // {
+                //     title: 'Community Call #1',
+                //     roles: ['DAO', 'Member', 'Founder'],
+                //     credits: 6,
+                // },
+                // {
+                //     title: 'Community Call #2',
+                //     roles: ['DAO', 'Member', 'Founder'],
+                //     credits: 12,
+                // }
             ],
             futureEvents: [
-                {
-                    title: 'Community Call #3',
-                    roles: ['DAO', 'Member', 'Founder'],
-                    credits: 6,
-                },
-                {
-                    title: 'Community Call #4',
-                    roles: ['DAO', 'Member', 'Founder'],
-                    credits: 12,
-                }
+                // {
+                //     title: 'Community Call #3',
+                //     roles: ['DAO', 'Member', 'Founder'],
+                //     credits: 6,
+                // },
+                // {
+                //     title: 'Community Call #4',
+                //     roles: ['DAO', 'Member', 'Founder'],
+                //     credits: 12,
+                // }
             ]
         }
     } else {
@@ -154,7 +155,8 @@ export const getTasks = async (activityAddress: string): Promise<Task[]> => {
     const tasks = [];
 
     for (var i = 0; i < activityIds.length; i++) {
-        const tokenUri = await ActivityContracts.getTokenURI(activityAddress, activityIds[i]);
+        const tokenCID = await ActivityContracts.getTokenURI(activityAddress, activityIds[i]);
+        const tokenUri = ipfsCIDToHttpUrl(tokenCID, true);
         let jsonMetadata = await getJSONFromURI(tokenUri)
         const task = await ActivityContracts.getTaskById(activityAddress, activityIds[i]);
         tasks.push({
@@ -175,7 +177,8 @@ export const getTaskById = async (activityAddress: string, activityID: string): 
     const activity = await ActivityContracts.getTaskById(activityAddress, activityID);
     console.log(activity);
 
-    const tokenUri = await ActivityContracts.getTokenURI(activityAddress, activityID);
+    const tokenUriCID = await ActivityContracts.getTokenURI(activityAddress, activityID);
+    const tokenUri = ipfsCIDToHttpUrl(tokenUriCID, true);
     let jsonMetadata = await getJSONFromURI(tokenUri)
     const task = await ActivityContracts.getTaskById(activityAddress, activityID);
 
@@ -193,11 +196,12 @@ export const getTaskById = async (activityAddress: string, activityID: string): 
 
     if (taskDetails.task.status > 0) {
         const takerTokenId = await SkillWalletContracts.getSkillWalletIdByOwner(taskDetails.task.taker);
-        const jsonUri = await SkillWalletContracts.getTokenURI(takerTokenId);
+        const jsonUriCID = await SkillWalletContracts.getTokenURI(takerTokenId);
+        const jsonUri = ipfsCIDToHttpUrl(jsonUriCID, false);
         let jsonMetadata = await getJSONFromURI(jsonUri)
         taskDetails.taker = {
             tokenId: takerTokenId,
-            imageUrl: jsonMetadata.image,
+            imageUrl: ipfsCIDToHttpUrl(jsonMetadata.image, false),
             nickname: jsonMetadata.properties.username,
             timestamp: undefined
         }
@@ -278,7 +282,8 @@ export const getMembershipID = async (tokenId: string, communityAddress: string)
 export const getCommunityDetails = async (communityAddress: string): Promise<CommunityListView> => {
 
     const members = await CommunityContracts.getMembersCount(communityAddress);
-    const communityMetadataUrl = await CommunityContracts.getMetadataUri(communityAddress);
+    const communityMetadataUrlCID = await CommunityContracts.getMetadataUri(communityAddress);
+    const communityMetadataUrl = ipfsCIDToHttpUrl(communityMetadataUrlCID, true);
     let communityMetadata = await getJSONFromURI(communityMetadataUrl)
     const name = communityMetadata.title ?? 'DiTo #1';
     const description = communityMetadata.description ?? 'description description description';
@@ -290,13 +295,6 @@ export const getCommunityDetails = async (communityAddress: string): Promise<Com
         address: communityAddress
     };
 
-}
-
-export const hasPendingActivation = async (userAddress: string): Promise<boolean> => {
-    const query = new Where('address').eq(userAddress);
-    const activationAttempts = (await threadDBClient.filter(PendingSWActivationCollection, query)) as PendingActivation[];
-    const lastAttempt = activationAttempts[activationAttempts.length - 1];
-    return lastAttempt !== undefined;
 }
 
 export const getNonceForQR = async (action: number, tokenId?: string): Promise<any> => {
@@ -315,18 +313,6 @@ export const getNonceForQR = async (action: number, tokenId?: string): Promise<a
     return { nonce, action };
 }
 
-export const loginValidation = async (nonce: number, tokenId: string): Promise<boolean> => {
-    const query = new Where('nonce').eq(nonce).and('action').eq(Actions.Login).and('isValidated').eq(false);
-    const login = (await threadDBClient.filter(QRCodeAuthCollection, query)) as QRCodeAuth[];
-    if (login && login.length > 0) {
-        login[login.length - 1].isValidated = true;
-        login[login.length - 1].tokenId = tokenId;
-        await threadDBClient.save(QRCodeAuthCollection, login);
-        return true;
-    }
-    return false;
-}
-
 export const findNonce = async (action: Actions, tokenId: string): Promise<number[]> => {
     let query = undefined;
     const actionNumber = +action;
@@ -340,16 +326,6 @@ export const findNonce = async (action: Actions, tokenId: string): Promise<numbe
         query = new Where('tokenId').eq(tokenId).and('action').eq(actionNumber).and('isValidated').eq(false);
     const auths = (await threadDBClient.filter(QRCodeAuthCollection, query)) as QRCodeAuth[];
     return auths.map(l => l.nonce);
-}
-
-export const getTokenIDAfterLogin = async (nonce: number): Promise<string> => {
-    const query = new Where('nonce').eq(nonce).and('action').eq(Actions.Login).and('isValidated').eq(true);
-    const login = (await threadDBClient.filter(QRCodeAuthCollection, query)) as QRCodeAuth[];
-    if (login && login.length > 0) {
-        await threadDBClient.delete(QRCodeAuthCollection, query);
-        return login[login.length - 1].tokenId;
-    } else
-        return "-1";
 }
 
 export const invalidateNonce = async (nonce: number, tokenId: string, action: Actions): Promise<void> => {

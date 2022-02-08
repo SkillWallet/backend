@@ -115,17 +115,6 @@ export class SkillWalletController {
     }
   }
 
-
-  public hasPendingAuthentication = async (req: any, res: Response) => {
-    try {
-      const pendingAuth = await skillWalletService.hasPendingActivation(req.query.address);
-      return res.status(200).send({ hasPendingAuth: pendingAuth });
-    } catch (err) {
-      this.loggerService.error(err);
-      res.status(500).send({ error: "Something went wrong, please try again later." });
-    }
-  }
-
   public activateSkillWallet = async (req: any, res: Response) => {
     console.log('activateSkillWallet', req.params.skillWalletId);
     try {
@@ -166,19 +155,6 @@ export class SkillWalletController {
     try {
       const nonce = await skillWalletService.getNonceForQR(+req.query.action, req.params.skillWalletId);
       res.status(200).send(nonce);
-    } catch (err) {
-      this.loggerService.error(err);
-      res.status(500).send({ error: "Something went wrong, please try again later." });
-    }
-  }
-
-  public getLogins = async (req: any, res: Response) => {
-    try {
-      const tokenId = await skillWalletService.getTokenIDAfterLogin(req.query.nonce);
-      if (tokenId === "-1")
-        return res.status(200).send({ message: "The QR code is not yet scanned." });
-      else
-        return res.status(200).send({ tokenId });
     } catch (err) {
       this.loggerService.error(err);
       res.status(500).send({ error: "Something went wrong, please try again later." });

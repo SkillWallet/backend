@@ -13,7 +13,8 @@ export class CommunityRouter {
   private init(): void {
     // GET
     this._router.get('/:communityAddress/skillwallet', this.communityController.get);
-
+    this._router.get('/:communityAddress/coreTeamMembers', this.communityController.getCoreTeamMemberNames);
+    this._router.post('/:communityAddress/coreTeamMembers', this.communityController.insertCoreTeamMemberName);
   }
 
   public get router(): Router {

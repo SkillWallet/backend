@@ -13,10 +13,9 @@ export class SkillWalletRouter {
   private init(): void {
     // Activation & Validation
     this._router.post("/:skillWalletId/activate", this.skillWalletController.activateSkillWallet);
-    this._router.get("/:skillWalletId/isActive", this.skillWalletController.isActive);
     this._router.post("/:skillWalletId/pubKey", this.skillWalletController.addPubKeyToSkillWallet);
     this._router.post("/:skillWalletId/validate", this.skillWalletController.validate);
-
+    this._router.get("/:skillWalletId/isActive", this.skillWalletController.isActive);
     
     // GET
     this._router.get('/', this.skillWalletController.get);
@@ -27,11 +26,6 @@ export class SkillWalletRouter {
     this._router.get("/:skillWalletId/badges", this.skillWalletController.getBadges);
     this._router.get("/:skillWalletId/community/:communityAddress/membershipID", this.skillWalletController.getMembershipID);
     
-
-    // External Login
-    this._router.get("/hasPendingAuth", this.skillWalletController.hasPendingAuthentication);
-    this._router.get("/login", this.skillWalletController.getLogins);
-
     // Nonces
     this._router.get("/:skillWalletId/nonces", this.skillWalletController.getNonceForValidation);
     this._router.delete("/:skillWalletId/nonces", this.skillWalletController.deleteNonce);

@@ -9,3 +9,4 @@ export * from './event';
 export * from './badge';
 export * from './membershipID';
 export * from './task';
+export * from './coreTeamMemberNames';

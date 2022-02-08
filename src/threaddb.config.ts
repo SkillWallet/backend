@@ -10,17 +10,16 @@ import {
 
 import {
   QRCodeAuthCollection,
-  PendingSWActivationCollection,
   ChatCollection,
   NotificationCollection,
+  CoreTeamMemberNamesCollection
 } from './constants/constants';
 import { injectable } from 'inversify';
 import {
   qrCodeAuthSchema,
-  pendingActivationSchema,
   chatSchema,
   notificationSchema,
-  Notification
+  coreTeamMemberNameSchema
 } from './models'
 require('dotenv').config()
 
@@ -57,9 +56,9 @@ class ThreadDBInit {
     }
 
     try {
-      await client.getCollectionIndexes(this.ditoThreadID, PendingSWActivationCollection);
+      await client.getCollectionIndexes(this.ditoThreadID, CoreTeamMemberNamesCollection);
     } catch (err) {
-      await client.newCollection(this.ditoThreadID, { name: PendingSWActivationCollection, schema: pendingActivationSchema });
+      await client.newCollection(this.ditoThreadID, { name: CoreTeamMemberNamesCollection, schema: coreTeamMemberNameSchema });
     }
 
     try {
@@ -72,29 +71,7 @@ class ThreadDBInit {
     } catch (err) {
       await client.newCollection(this.ditoThreadID, { name: NotificationCollection, schema: notificationSchema });
     }
-
-    // const notif1: Notification = {
-    //   _id: undefined, 
-    //   contactSkillWalletId: "3",
-    //   skillWalletId: "4",
-    //   message: "art working on your Gig - and earn DITO Credits!",
-    //   title: "Your Gig has started!"
-    // };
-
-
-    // const notif2: Notification = {
-    //   _id: undefined, 
-    //   contactSkillWalletId: "3",
-    //   skillWalletId: "4",
-    //   message: "art working on your Gig - and earn DITO Credits!",
-    //   title: "Your Gig has started!"
-    // };
-
-    // await client.create(this.ditoThreadID, NotificationCollection, [
-    //   notif1, notif2
-    // ])
   }
-
 
   private async auth(keyInfo: KeyInfo) {
     // Create an expiration and create a signature. 60s or less is recommended.
