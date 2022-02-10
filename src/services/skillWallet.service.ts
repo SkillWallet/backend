@@ -260,11 +260,8 @@ export const getBadges = async (tokenId: string): Promise<CommunityBadges[]> => 
 
 
 export const getMembershipID = async (tokenId: string, communityAddress: string): Promise<MembershipID> => {
-    console.log('tokenId', tokenId);
     const skillWallet = await getSkillWallet(tokenId);
-    console.log('skillWallet', skillWallet)
     const community = await getCommunityDetails(communityAddress);
-    console.log('community', community);
     const isActive = true;
     if (isActive) {
         return {
