@@ -107,6 +107,7 @@ export class SkillWalletController {
 
   public getMembershipID = async (req: any, res: Response) => {
     try {
+      console.log('getMembershipID');
       const events = await skillWalletService.getMembershipID(req.params.skillWalletId, req.params.communityAddress);
       return res.status(200).send(events);
     } catch (err) {
