@@ -273,7 +273,7 @@ export const getMembershipID = async (tokenId: string, communityAddress: string)
             membershipNumber: "1",
             communnityDescription: community.description,
             about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi. Cras faucibus mi massa, a rhoncus odio eleifend at. Aliquam imperdiet, felis sit amet ultrices congue, orci purus dignissim lectus, non tincidunt sapien tellus vel ex. Nam rhoncus orci arcu, non posuere mauris aliquet vitae.',
-            owner: skillWallet.nickname,
+            owner: skillWallet?.nickname,
             date: 'Nov, 13, 2021'
         }
     } else {
