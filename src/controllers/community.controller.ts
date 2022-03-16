@@ -2,12 +2,51 @@ import { LoggerService } from "../services";
 import { Response } from "express";
 import { injectable } from "inversify";
 import * as communityService from '../services/community.service';
+import * as services from '../services';
 
 @injectable()
 export class CommunityController {
   constructor(
     private loggerService: LoggerService,
   ) { }
+
+  public getPAByCommunity = async  (req: any, res: Response) => {
+    try {
+      const key = await services.getPAByCommunity(req.params.communityAddress);
+      if(key){
+        res.status(200).send(key);
+      } else 
+        res.status(400).send({ error: 'Invalid key!'});
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
+  public postPartnerAgreement = async  (req: any, res: Response) => {
+    try {
+      const key = await services.createPartnerAgreementKey(req.body.partnersAgreementAddress, req.body.communityAddress);
+      res.status(201).send({ key });
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
+  public getCommunityByPartnerAgreementKey = async  (req: any, res: Response) => {
+    try {
+      const key = await services.getKey(req.params.key);
+      if(key){
+        const com = await services.getCommunity(key.communityAddress);
+        com.partnersAgreementAddress = key.partnersAgreementAddress;
+        res.status(200).send(com);
+      } else 
+        res.status(400).send({ error: 'Invalid key!'});
+    } catch (err) {
+      this.loggerService.error(err);
+      res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
 
   public get = async (req: any, res: Response) => {
     try {

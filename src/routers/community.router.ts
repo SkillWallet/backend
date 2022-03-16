@@ -14,7 +14,12 @@ export class CommunityRouter {
     // GET
     this._router.get('/:communityAddress/skillwallet', this.communityController.get);
     this._router.get('/:communityAddress/coreTeamMembers', this.communityController.getCoreTeamMemberNames);
+    this._router.get("/key/:key", this.communityController.getCommunityByPartnerAgreementKey);
+    this._router.get("/:communityAddress/key", this.communityController.getPAByCommunity);
+
+    // POST
     this._router.post('/:communityAddress/coreTeamMembers', this.communityController.insertCoreTeamMemberName);
+    this._router.post("/key", this.communityController.postPartnerAgreement)
   }
 
   public get router(): Router {
