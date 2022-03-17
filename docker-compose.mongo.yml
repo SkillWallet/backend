@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+
+  skillwallet-db:
+    container_name: skillwallet-db
+    image: mongo
+    volumes:
+      - ./data-dev:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - skill-wallet
+
+networks:
+  skill-wallet:

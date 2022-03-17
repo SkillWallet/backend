@@ -3,7 +3,7 @@ import skillWallet from './abis/SkillWallet.json';
 import osm from './abis/OSM.json';
 import activities from './abis/Activities.json';
 import distributedTown from './abis/DistributedTown.json';
-import { ethers, provider, signer } from '../tools/ethers';
+import { ethers, signer } from '../tools/ethers';
 
 require('dotenv').config()
 
@@ -17,6 +17,7 @@ export const distributedTownContract = () => {
     return contract;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
 
@@ -30,6 +31,7 @@ export const skillWalletContract = () => {
     return contract;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 }
 export const communityContract = (address) => {
@@ -42,6 +44,7 @@ export const communityContract = (address) => {
     return contract;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
 
@@ -56,10 +59,11 @@ export const activitiesContract = (address) => {
     return contract;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
 
-export const osmContract = (address) => {
+export const osmContract = (address: string) => {
   try {
     let contract = new ethers.Contract(
       address,
@@ -69,6 +73,7 @@ export const osmContract = (address) => {
     return contract;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
 

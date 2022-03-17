@@ -21,13 +21,13 @@ export class SkillWalletController {
         });
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
   };
 
-  public getConfig = async (req: any, res: Response) => {
+  public getConfig = async (_: any, res: Response) => {
     try {
       return res.status(200).send({
         skillWalletAddress: process.env.SKILL_WALLET_ADDRESS,
@@ -35,7 +35,7 @@ export class SkillWalletController {
       });
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -52,7 +52,7 @@ export class SkillWalletController {
       }
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -65,7 +65,7 @@ export class SkillWalletController {
       return res.status(200).send(interactionNFTs);
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -79,7 +79,7 @@ export class SkillWalletController {
       return res.status(200).send(events);
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -94,7 +94,7 @@ export class SkillWalletController {
       return res.status(200).send(task);
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -108,7 +108,7 @@ export class SkillWalletController {
       return res.status(200).send(events);
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -122,7 +122,7 @@ export class SkillWalletController {
       return res.status(200).send(events);
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -138,7 +138,7 @@ export class SkillWalletController {
       return res.status(200).send(events);
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -185,7 +185,7 @@ export class SkillWalletController {
       }
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -202,7 +202,7 @@ export class SkillWalletController {
       return res.status(200).send({ isActive });
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -232,7 +232,7 @@ export class SkillWalletController {
       return res.status(200).send({ nonces });
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -248,7 +248,7 @@ export class SkillWalletController {
       return res.status(200).send();
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -268,17 +268,17 @@ export class SkillWalletController {
       if (!pubKey)
         return res.status(400).send({ message: "pubKey is a required field" });
       if (!skillWalletId || skillWalletId < 0) {
-        res.status(404).send({ message: "skillWallet is a required field" });
+        return res.status(404).send({ message: "skillWallet is a required field" });
       } else {
         await SkillWalletContracts.addPubKeyToSkillWallet(
           skillWalletId,
           pubKey
         );
-        res.status(200).send({ message: "Successfully added pubKey to SW." });
+        return res.status(200).send({ message: "Successfully added pubKey to SW." });
       }
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -327,7 +327,7 @@ export class SkillWalletController {
       }
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -352,7 +352,7 @@ export class SkillWalletController {
       return res.status(200).send({ chat });
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -381,10 +381,10 @@ export class SkillWalletController {
         recipient,
         req.body.text
       );
-      res.status(201).send();
+      return res.status(201).send();
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }
@@ -401,10 +401,10 @@ export class SkillWalletController {
       const notifications = await skillWalletService.getNotifications(
         skillWalletId
       );
-      res.status(200).send({ notifications });
+      return res.status(200).send({ notifications });
     } catch (err) {
       this.loggerService.error(err);
-      res
+      return res
         .status(500)
         .send({ error: "Something went wrong, please try again later." });
     }

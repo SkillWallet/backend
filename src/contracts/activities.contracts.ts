@@ -26,6 +26,7 @@ export class ActivityContracts {
       return activity;
     } catch (err) {
       console.log(err);
+      return undefined;
     }
   }
 
@@ -33,9 +34,10 @@ export class ActivityContracts {
     try {
       const contract = activitiesContract(activityAddress);
       const uri = await contract.tokenURI(tokenId);
-      return uri;
+      return uri as string;
     } catch (err) {
       console.log(err);
+      return undefined;
     }
   }
 }

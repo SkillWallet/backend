@@ -12,8 +12,13 @@
     "emitDecoratorMetadata": true,
     "outDir": "./dist",
     "baseUrl": "./src",
-    "alwaysStrict": true,
+    "alwaysStrict": false,
     "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
     "paths": {
       "*": ["node_modules/*"]
     },

@@ -4,7 +4,6 @@ import {
   Actions,
   QRCodeAuth,
   SkillWallet,
-  PendingActivation,
   CommunityListView,
   Chat,
   InteractionNFT,
@@ -128,8 +127,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
 export const getInteractions = async (
   tokenId: string
 ): Promise<InteractionNFT[]> => {
-  // const isActive = await SkillWalletContracts.isActive(tokenId);
-  const isActive = true;
+  const isActive = await SkillWalletContracts.isActive(tokenId);
   if (isActive) {
     return [
       // {
@@ -157,8 +155,7 @@ export const getInteractions = async (
 };
 
 export const getEvents = async (tokenId: string): Promise<EventsList> => {
-  // const isActive = await SkillWalletContracts.isActive(tokenId);
-  const isActive = true;
+  const isActive = await SkillWalletContracts.isActive(tokenId);
   if (isActive) {
     return {
       pastEvents: [
@@ -274,8 +271,7 @@ export const getTaskById = async (
 export const getBadges = async (
   tokenId: string
 ): Promise<CommunityBadges[]> => {
-  // const isActive = await SkillWalletContracts.isActive(tokenId);
-  const isActive = true;
+  const isActive = await SkillWalletContracts.isActive(tokenId);
   if (isActive) {
     return [
       {
