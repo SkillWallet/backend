@@ -2,7 +2,6 @@ import {
   Client,
   createUserAuth,
   KeyInfo,
-  PrivateKey,
   QueryJSON,
   ThreadID,
   UserAuth,
@@ -24,7 +23,6 @@ import {
 require('dotenv').config()
 
 const ditoThreadID = process.env.DITO_THREADID;
-const ditoPrivKey = process.env.DITO_PRIVATE_KEY;
 const keyInfo = {
   key: process.env.TEXTILE_KEY,
   secret: process.env.TEXTILE_SECRET
@@ -101,15 +99,6 @@ class ThreadDBInit {
     const thread = threadID ? ThreadID.fromString(threadID) : this.ditoThreadID;
     const toReturn = await client.find(thread, collectionName, filter);
     return toReturn;
-  }
-
-  public async delete(collectionName: string, filter: QueryJSON, threadID?: string) {
-    const auth = await this.auth(keyInfo);
-    const client = Client.withUserAuth(auth);
-    const thread = threadID ? ThreadID.fromString(threadID) : this.ditoThreadID;
-    const toDelete = (await client.find(thread, collectionName, {})).map(item => (item as any)._id);
-    await client.delete(thread, collectionName, toDelete);
-    return toDelete;
   }
 
   public async insert(collectionName: string, model: any, threadID?: string) {

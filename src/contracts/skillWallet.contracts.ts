@@ -10,6 +10,7 @@ export class SkillWalletContracts {
             return tokenId.toString();
         } catch (err) {
             console.log(err);
+            return undefined;
         }
     }
 
@@ -17,9 +18,10 @@ export class SkillWalletContracts {
         try {
             const contract = skillWalletContract();
             const uri = await contract.tokenURI(tokenId);
-            return uri;
+            return uri as string;
         } catch (err) {
             console.log(err);
+            return undefined
         }
     }
 
@@ -50,6 +52,7 @@ export class SkillWalletContracts {
             return skills;
         } catch (err) {
             console.log(err);
+            return undefined;
         }
     }
 
@@ -60,9 +63,10 @@ export class SkillWalletContracts {
             console.log(tokenId);
             const isActivated = await contract.isSkillWalletActivated(tokenId);
             console.log(isActivated);
-            return isActivated;
+            return isActivated as boolean;
         } catch (err) {
             console.log(err);
+            return false;
         }
     }
 
@@ -71,9 +75,10 @@ export class SkillWalletContracts {
         try {
             const contract = skillWalletContract();
             const owner = await contract.ownerOf(tokenId);
-            return owner;
+            return owner as string;
         } catch (err) {
             console.log(err);
+            return undefined;
         }
     }
 
