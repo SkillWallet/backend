@@ -1,3 +1,5 @@
+import { SkillsCategory } from './../models/skillCategory';
+import { GeneralSkills } from './../constants/constants';
 import {
   Actions,
   QRCodeAuth,
@@ -24,6 +26,10 @@ import {
 } from "../constants/constants";
 import { getJSONFromURI, getNonce, ipfsCIDToHttpUrl } from "../utils/helpers";
 import { ActivityContracts } from "../contracts/activities.contracts";
+
+export async function getByCategory(category: string): Promise<SkillsCategory> {
+  return GeneralSkills.find(coll => coll.main === category) as SkillsCategory;
+}
 
 export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
   const skillWallet: SkillWallet = {
