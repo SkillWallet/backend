@@ -208,51 +208,51 @@ export class SkillWalletController {
     }
   };
 
-  public generateNonce = async (req: any, res: Response) => {
-    try {
-      const nonce = await skillWalletService.getNonceForQR(
-        +req.query.action,
-        req.params.skillWalletId
-      );
-      res.status(200).send(nonce);
-    } catch (err) {
-      this.loggerService.error(err);
-      res
-        .status(500)
-        .send({ error: "Something went wrong, please try again later." });
-    }
-  };
+  // public generateNonce = async (req: any, res: Response) => {
+  //   try {
+  //     const nonce = await skillWalletService.getNonceForQR(
+  //       +req.query.action,
+  //       req.params.skillWalletId
+  //     );
+  //     res.status(200).send(nonce);
+  //   } catch (err) {
+  //     this.loggerService.error(err);
+  //     res
+  //       .status(500)
+  //       .send({ error: "Something went wrong, please try again later." });
+  //   }
+  // };
 
-  public getNonceForValidation = async (req: any, res: Response) => {
-    try {
-      const nonces = await skillWalletService.findNonce(
-        req.query.action,
-        req.params.skillWalletId
-      );
-      return res.status(200).send({ nonces });
-    } catch (err) {
-      this.loggerService.error(err);
-      return res
-        .status(500)
-        .send({ error: "Something went wrong, please try again later." });
-    }
-  };
+  // public getNonceForValidation = async (req: any, res: Response) => {
+  //   try {
+  //     const nonces = await skillWalletService.findNonce(
+  //       req.query.action,
+  //       req.params.skillWalletId
+  //     );
+  //     return res.status(200).send({ nonces });
+  //   } catch (err) {
+  //     this.loggerService.error(err);
+  //     return res
+  //       .status(500)
+  //       .send({ error: "Something went wrong, please try again later." });
+  //   }
+  // };
 
-  public deleteNonce = async (req: any, res: Response) => {
-    try {
-      await skillWalletService.invalidateNonce(
-        req.query.nonce,
-        req.params.skillWalletId,
-        req.query.action
-      );
-      return res.status(200).send();
-    } catch (err) {
-      this.loggerService.error(err);
-      return res
-        .status(500)
-        .send({ error: "Something went wrong, please try again later." });
-    }
-  };
+  // public deleteNonce = async (req: any, res: Response) => {
+  //   try {
+  //     await skillWalletService.invalidateNonce(
+  //       req.query.nonce,
+  //       req.params.skillWalletId,
+  //       req.query.action
+  //     );
+  //     return res.status(200).send();
+  //   } catch (err) {
+  //     this.loggerService.error(err);
+  //     return res
+  //       .status(500)
+  //       .send({ error: "Something went wrong, please try again later." });
+  //   }
+  // };
 
   public addPubKeyToSkillWallet = async (req: any, res: Response) => {
     try {
@@ -333,80 +333,80 @@ export class SkillWalletController {
     }
   };
 
-  public getChat = async (req: any, res: Response) => {
-    try {
-      this.loggerService.info("params: " + JSON.stringify(req.params));
-      this.loggerService.info("req.query: " + JSON.stringify(req.query));
-      const skillWalletId = req.params.skillWalletId;
-      const recipient = req.query.recipient;
+  // public getChat = async (req: any, res: Response) => {
+  //   try {
+  //     this.loggerService.info("params: " + JSON.stringify(req.params));
+  //     this.loggerService.info("req.query: " + JSON.stringify(req.query));
+  //     const skillWalletId = req.params.skillWalletId;
+  //     const recipient = req.query.recipient;
 
-      if (!skillWalletId || skillWalletId < 0)
-        return res
-          .status(404)
-          .send({ message: "skillWallet is a required field" });
-      if (!recipient || recipient < 0)
-        return res
-          .status(400)
-          .send({ message: "recipient is a required field" });
-      const chat = await skillWalletService.getChat(skillWalletId, recipient);
-      return res.status(200).send({ chat });
-    } catch (err) {
-      this.loggerService.error(err);
-      return res
-        .status(500)
-        .send({ error: "Something went wrong, please try again later." });
-    }
-  };
+  //     if (!skillWalletId || skillWalletId < 0)
+  //       return res
+  //         .status(404)
+  //         .send({ message: "skillWallet is a required field" });
+  //     if (!recipient || recipient < 0)
+  //       return res
+  //         .status(400)
+  //         .send({ message: "recipient is a required field" });
+  //     const chat = await skillWalletService.getChat(skillWalletId, recipient);
+  //     return res.status(200).send({ chat });
+  //   } catch (err) {
+  //     this.loggerService.error(err);
+  //     return res
+  //       .status(500)
+  //       .send({ error: "Something went wrong, please try again later." });
+  //   }
+  // };
 
-  public addMessage = async (req: any, res: Response) => {
-    try {
-      this.loggerService.info("params: " + JSON.stringify(req.params));
-      this.loggerService.info("body: " + JSON.stringify(req.body));
-      const skillWalletId = req.params.skillWalletId;
-      const recipient = req.body.recipient;
-      const text = req.body.text;
-      if (!skillWalletId || skillWalletId < 0)
-        return res
-          .status(404)
-          .send({ message: "skillWallet is a required field" });
-      if (!recipient || recipient < 0)
-        return res
-          .status(400)
-          .send({ message: "recipient is a required field" });
-      if (!text)
-        return res.status(400).send({ message: "text is a required field" });
+  // public addMessage = async (req: any, res: Response) => {
+  //   try {
+  //     this.loggerService.info("params: " + JSON.stringify(req.params));
+  //     this.loggerService.info("body: " + JSON.stringify(req.body));
+  //     const skillWalletId = req.params.skillWalletId;
+  //     const recipient = req.body.recipient;
+  //     const text = req.body.text;
+  //     if (!skillWalletId || skillWalletId < 0)
+  //       return res
+  //         .status(404)
+  //         .send({ message: "skillWallet is a required field" });
+  //     if (!recipient || recipient < 0)
+  //       return res
+  //         .status(400)
+  //         .send({ message: "recipient is a required field" });
+  //     if (!text)
+  //       return res.status(400).send({ message: "text is a required field" });
 
-      await skillWalletService.addMessage(
-        skillWalletId,
-        recipient,
-        req.body.text
-      );
-      return res.status(201).send();
-    } catch (err) {
-      this.loggerService.error(err);
-      return res
-        .status(500)
-        .send({ error: "Something went wrong, please try again later." });
-    }
-  };
+  //     await skillWalletService.addMessage(
+  //       skillWalletId,
+  //       recipient,
+  //       req.body.text
+  //     );
+  //     return res.status(201).send();
+  //   } catch (err) {
+  //     this.loggerService.error(err);
+  //     return res
+  //       .status(500)
+  //       .send({ error: "Something went wrong, please try again later." });
+  //   }
+  // };
 
-  public getNotifications = async (req: any, res: Response) => {
-    try {
-      const skillWalletId = req.params.skillWalletId;
-      if (!skillWalletId || skillWalletId < 0)
-        return res
-          .status(404)
-          .send({ message: "skillWallet is a required field" });
+  // public getNotifications = async (req: any, res: Response) => {
+  //   try {
+  //     const skillWalletId = req.params.skillWalletId;
+  //     if (!skillWalletId || skillWalletId < 0)
+  //       return res
+  //         .status(404)
+  //         .send({ message: "skillWallet is a required field" });
 
-      const notifications = await skillWalletService.getNotifications(
-        skillWalletId
-      );
-      return res.status(200).send({ notifications });
-    } catch (err) {
-      this.loggerService.error(err);
-      return res
-        .status(500)
-        .send({ error: "Something went wrong, please try again later." });
-    }
-  };
+  //     const notifications = await skillWalletService.getNotifications(
+  //       skillWalletId
+  //     );
+  //     return res.status(200).send({ notifications });
+  //   } catch (err) {
+  //     this.loggerService.error(err);
+  //     return res
+  //       .status(500)
+  //       .send({ error: "Something went wrong, please try again later." });
+  //   }
+  // };
 }
