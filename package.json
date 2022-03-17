@@ -21,7 +21,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@textile/hub": "6.1.2",
     "mongoose":"6.2.7",
     "axios": "0.21.1",
     "ethers": "^5.0.24",
