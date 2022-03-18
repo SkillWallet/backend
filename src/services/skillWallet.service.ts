@@ -384,16 +384,12 @@ export const findNonce = async (
   action: Actions,
   tokenId: string
 ): Promise<number[]> => {
-  let query = undefined;
   const actionNumber = +action;
   console.log(actionNumber);
   console.log(typeof actionNumber);
   console.log(action == Actions.Login);
 
-  if (action == Actions.Login) query = { action: actionNumber, isValidated: false };
-  else query = { tokenId, action: actionNumber, isValidated: false };
-
-  const auths = await QrCodeAuthModel.find(query).exec();
+  const auths = await QrCodeAuthModel.find({ tokenId, action: actionNumber, isValidated: false }).exec();
 
   return auths.map((l) => l.nonce);
 };
