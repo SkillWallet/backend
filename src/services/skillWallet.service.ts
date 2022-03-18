@@ -1,8 +1,8 @@
+import { QrCodeAuthModel } from './../models/qrCodeAuth';
 import { SkillsCategory } from './../models/skillCategory';
 import { GeneralSkills } from './../constants/constants';
 import {
-  // Actions,
-  // QRCodeAuth,
+  Actions,
   SkillWallet,
   CommunityListView,
   // Chat,
@@ -21,8 +21,7 @@ import { CommunityContracts } from "../contracts/community.contracts";
 //   QRCodeAuthCollection,
 //   NotificationCollection,
 // } from "../constants/constants";
-import { getJSONFromURI, ipfsCIDToHttpUrl } from "../utils/helpers";
-// import { getNonce } from "../utils/helpers";
+import { getJSONFromURI, getNonce, ipfsCIDToHttpUrl } from "../utils/helpers";
 import { ActivityContracts } from "../contracts/activities.contracts";
 
 export async function getByCategory(category: string): Promise<SkillsCategory> {
@@ -360,72 +359,58 @@ export const getCommunityDetails = async (
   };
 };
 
-// export const getNonceForQR = async (
-//   action: number,
-//   tokenId?: string
-// ): Promise<any> => {
-//   const nonce = getNonce();
-//   if ((!tokenId || tokenId === "-1") && action !== Actions.Login)
-//     return { message: "skillWalletId is required" };
-//   console.log(action);
-//   const authModel: QRCodeAuth = {
-//     _id: undefined,
-//     nonce,
-//     action,
-//     tokenId,
-//     isValidated: false,
-//   };
-//   await threadDBClient.insert(QRCodeAuthCollection, authModel);
-//   return { nonce, action };
-// };
+export const getNonceForQR = async (
+  action: number,
+  tokenId?: string
+): Promise<any> => {
+  const nonce = getNonce();
+  if ((!tokenId || tokenId === "-1") && action !== Actions.Login)
+    return { message: "skillWalletId is required" };
+  console.log(action);
+  
+  const authModel = new QrCodeAuthModel({
+    nonce,
+    action,
+    tokenId,
+    isValidated: false,
+  });
 
-// export const findNonce = async (
-//   action: Actions,
-//   tokenId: string
-// ): Promise<number[]> => {
-//   let query = undefined;
-//   const actionNumber = +action;
-//   console.log(actionNumber);
-//   console.log(typeof actionNumber);
-//   console.log(action == Actions.Login);
-//   if (action == Actions.Login)
-//     // TODO: add tokenId
-//     query = new Where("action").eq(actionNumber).and("isValidated").eq(false);
-//   else
-//     query = new Where("tokenId")
-//       .eq(tokenId)
-//       .and("action")
-//       .eq(actionNumber)
-//       .and("isValidated")
-//       .eq(false);
-//   const auths = (await threadDBClient.filter(
-//     QRCodeAuthCollection,
-//     query
-//   )) as QRCodeAuth[];
-//   return auths.map((l) => l.nonce);
-// };
+  await authModel.save();
 
-// export const invalidateNonce = async (
-//   nonce: number,
-//   tokenId: string,
-//   action: Actions
-// ): Promise<void> => {
-//   const query = new Where("nonce")
-//     .eq(nonce)
-//     .and("isValidated")
-//     .eq(false)
-//     .and("action")
-//     .eq(action);
-//   const qrAuths = (await threadDBClient.filter(
-//     QRCodeAuthCollection,
-//     query
-//   )) as QRCodeAuth[];
-//   qrAuths.forEach((auth) => {
-//     auth.isValidated = true;
-//     if (tokenId) auth.tokenId = tokenId;
-//     threadDBClient.update(QRCodeAuthCollection, auth._id, auth);
-//   });
-// };
+  return { nonce, action };
+};
+
+export const findNonce = async (
+  action: Actions,
+  tokenId: string
+): Promise<number[]> => {
+  let query = undefined;
+  const actionNumber = +action;
+  console.log(actionNumber);
+  console.log(typeof actionNumber);
+  console.log(action == Actions.Login);
+
+  if (action == Actions.Login) query = { action: actionNumber, isValidated: false };
+  else query = { tokenId, action: actionNumber, isValidated: false };
+
+  const auths = await QrCodeAuthModel.find(query).exec();
+
+  return auths.map((l) => l.nonce);
+};
+
+export const invalidateNonce = async (
+  nonce: number,
+  tokenId: string,
+  action: Actions
+): Promise<void> => {
+  const qrAuths = await QrCodeAuthModel.find({ nonce, action, isValidated: false }).exec();
+
+  qrAuths.forEach((auth) => {
+    if (tokenId) auth.tokenId = tokenId;
+    auth.isValidated = true;
+    auth.save();
+  });
+};
 
 // export const getChat = async (
 //   skillWalletId: string,

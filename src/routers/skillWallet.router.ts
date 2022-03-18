@@ -27,9 +27,9 @@ export class SkillWalletRouter {
     this._router.get("/:skillWalletId/community/:communityAddress/membershipID", this.skillWalletController.getMembershipID);
     
     // Nonces
-    // this._router.get("/:skillWalletId/nonces", this.skillWalletController.getNonceForValidation);
-    // this._router.delete("/:skillWalletId/nonces", this.skillWalletController.deleteNonce);
-    // this._router.post('/:skillWalletId/nonces', this.skillWalletController.generateNonce);
+    this._router.get("/:skillWalletId/nonces", this.skillWalletController.getNonceForValidation);
+    this._router.delete("/:skillWalletId/nonces", this.skillWalletController.deleteNonce);
+    this._router.post('/:skillWalletId/nonces', this.skillWalletController.generateNonce);
 
     // Messages
     // this._router.get("/:skillWalletId/message", this.skillWalletController.getChat);

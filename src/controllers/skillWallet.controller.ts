@@ -208,51 +208,51 @@ export class SkillWalletController {
     }
   };
 
-  // public generateNonce = async (req: any, res: Response) => {
-  //   try {
-  //     const nonce = await skillWalletService.getNonceForQR(
-  //       +req.query.action,
-  //       req.params.skillWalletId
-  //     );
-  //     res.status(200).send(nonce);
-  //   } catch (err) {
-  //     this.loggerService.error(err);
-  //     res
-  //       .status(500)
-  //       .send({ error: "Something went wrong, please try again later." });
-  //   }
-  // };
+  public generateNonce = async (req: any, res: Response) => {
+    try {
+      const nonce = await skillWalletService.getNonceForQR(
+        +req.query.action,
+        req.params.skillWalletId
+      );
+      res.status(200).send(nonce);
+    } catch (err) {
+      this.loggerService.error(err);
+      res
+        .status(500)
+        .send({ error: "Something went wrong, please try again later." });
+    }
+  };
 
-  // public getNonceForValidation = async (req: any, res: Response) => {
-  //   try {
-  //     const nonces = await skillWalletService.findNonce(
-  //       req.query.action,
-  //       req.params.skillWalletId
-  //     );
-  //     return res.status(200).send({ nonces });
-  //   } catch (err) {
-  //     this.loggerService.error(err);
-  //     return res
-  //       .status(500)
-  //       .send({ error: "Something went wrong, please try again later." });
-  //   }
-  // };
+  public getNonceForValidation = async (req: any, res: Response) => {
+    try {
+      const nonces = await skillWalletService.findNonce(
+        req.query.action,
+        req.params.skillWalletId
+      );
+      return res.status(200).send({ nonces });
+    } catch (err) {
+      this.loggerService.error(err);
+      return res
+        .status(500)
+        .send({ error: "Something went wrong, please try again later." });
+    }
+  };
 
-  // public deleteNonce = async (req: any, res: Response) => {
-  //   try {
-  //     await skillWalletService.invalidateNonce(
-  //       req.query.nonce,
-  //       req.params.skillWalletId,
-  //       req.query.action
-  //     );
-  //     return res.status(200).send();
-  //   } catch (err) {
-  //     this.loggerService.error(err);
-  //     return res
-  //       .status(500)
-  //       .send({ error: "Something went wrong, please try again later." });
-  //   }
-  // };
+  public deleteNonce = async (req: any, res: Response) => {
+    try {
+      await skillWalletService.invalidateNonce(
+        req.query.nonce,
+        req.params.skillWalletId,
+        req.query.action
+      );
+      return res.status(200).send();
+    } catch (err) {
+      this.loggerService.error(err);
+      return res
+        .status(500)
+        .send({ error: "Something went wrong, please try again later." });
+    }
+  };
 
   public addPubKeyToSkillWallet = async (req: any, res: Response) => {
     try {
