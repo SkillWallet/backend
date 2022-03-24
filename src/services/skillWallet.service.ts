@@ -33,7 +33,8 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
   } as SkillWallet;
 
   if (tokenId === "123123123") {
-    skillWallet = {
+    console.log('fetching apple account');
+    return {
       tokenId: "123123123",
       nickname: "Apple test",
       imageUrl:
