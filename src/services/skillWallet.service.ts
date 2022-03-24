@@ -44,7 +44,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
       currentCommunities: [
         {
           name: "Apple Test Community",
-          address: "0x",
+          address: "0x61377c47A3E9F44266D9f75d5f9124D0d784102d",
           members: 2,
           description: "This is a test community for Apple testers.",
           scarcityScore: 72,
@@ -55,7 +55,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
       pastCommunities: [
         {
           name: "Apple Test Community",
-          address: "0x",
+          address: "0x61377c47A3E9F44266D9f75d5f9124D0d784102d",
           members: 2,
           description: "This is a test community for Apple testers.",
           scarcityScore: 72,
