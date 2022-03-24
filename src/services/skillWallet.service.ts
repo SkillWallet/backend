@@ -32,9 +32,9 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
     currentCommunities: [],
   } as SkillWallet;
 
-  if (tokenId === "-1") {
+  if (tokenId === "123123123") {
     return {
-      tokenId: "-1",
+      tokenId: "123123123",
       nickname: "Apple test",
       imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png",
