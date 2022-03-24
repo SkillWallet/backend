@@ -34,42 +34,36 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
 
   if (tokenId === "123123123") {
     console.log('fetching apple account');
+
     return {
-      tokenId: "123123123",
-      nickname: "Apple test",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png",
-      diToCredits: 2000,
-      repScore: 1.6,
-      currentCommunities: [
+      "pastCommunities": [
         {
-          name: "Apple Test Community",
-          address: "0x61377c47A3E9F44266D9f75d5f9124D0d784102d",
-          members: 2,
-          description: "This is a test community for Apple testers.",
-          scarcityScore: 72,
-          comScore: 2,
-          repCredits: 2000,
-        },
+          "name": "SkillWallet DAO",
+          "address": "0x61377c47A3E9F44266D9f75d5f9124D0d784102d"
+        }
       ],
-      pastCommunities: [
+      "skills": [
         {
-          name: "Apple Test Community",
-          address: "0x61377c47A3E9F44266D9f75d5f9124D0d784102d",
-          members: 2,
-          description: "This is a test community for Apple testers.",
-          scarcityScore: 72,
-          comScore: 2,
-          repCredits: 2000,
-        },
+          "name": "Tester",
+          "value": 10
+        }
       ],
-      skills: [
+      "currentCommunities": [
         {
-          name: "Tester",
-          value: 10,
-        },
+          "address": "0x61377c47A3E9F44266D9f75d5f9124D0d784102d",
+          "members": 2,
+          "name": "SkillWallet DAO",
+          "description": "SkillWallets are individual, non-transferable NFT IDs that unlock the true potential of Web3 Communities.",
+          "scarcityScore": 0,
+          "comScore": 1.08,
+          "repCredits": 2342
+        }
       ],
-    };
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png",
+      "nickname": "Apple test",
+      "tokenId": "123123123",
+      "repScore": 1.3
+    } as SkillWallet;
   }
   const isActive = await SkillWalletContracts.isActive(tokenId);
   if (isActive) {
