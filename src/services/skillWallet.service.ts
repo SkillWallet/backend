@@ -323,6 +323,19 @@ export const getMembershipID = async (
   tokenId: string,
   communityAddress: string
 ): Promise<MembershipID> => {
+  if (tokenId === '123123123')
+    return {
+      communityName: "SkillWallet DAO",
+      logoImage:
+        "https://hub.textile.io/ipfs/bafkreibnuixt3dwsnp6tilkmth75cg7loeurun2udtsoucwotfklwc6ymu",
+      membershipNumber: "1",
+      communnityDescription: "SkillWallets are individual, non-transferable NFT IDs that unlock the true potential of Web3 Communities.",
+      about:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non arcu augue. Sed et sapien fringilla, vestibulum nulla viverra, lobortis est. Sed purus lectus, gravida a leo in, tincidunt commodo urna. Mauris vitae pulvinar lacus, sed interdum nisi. Cras faucibus mi massa, a rhoncus odio eleifend at. Aliquam imperdiet, felis sit amet ultrices congue, orci purus dignissim lectus, non tincidunt sapien tellus vel ex. Nam rhoncus orci arcu, non posuere mauris aliquet vitae.",
+      owner: 'Apple Test',
+      date: "Nov, 13, 2021",
+    };
+
   const skillWallet = await getSkillWallet(tokenId);
   const community = await getCommunityDetails(communityAddress);
   const isActive = true;
