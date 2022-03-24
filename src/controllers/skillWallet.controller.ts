@@ -154,7 +154,7 @@ export class SkillWalletController {
       if (!req.body.signature) {
         return res.status(400).send("No signature passed");
       }
-      if (+req.params.skillWalletId == -1) {
+      if (+req.params.skillWalletId == 123123123) {
         await (new Promise(resolve => setTimeout(resolve, 4000)));
         return res
           .status(200)
@@ -193,7 +193,7 @@ export class SkillWalletController {
 
   public isActive = async (req: any, res: Response) => {
     try {
-      if (+req.params.skillWalletId == -1)
+      if (+req.params.skillWalletId == 123123123)
         return res.status(200).send({ isActive: true });
       const isActive = await SkillWalletContracts.isActive(
         req.params.skillWalletId
