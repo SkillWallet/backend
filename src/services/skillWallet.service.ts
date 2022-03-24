@@ -323,7 +323,7 @@ export const getMembershipID = async (
   tokenId: string,
   communityAddress: string
 ): Promise<MembershipID> => {
-  if (tokenId === '123123123')
+  if (tokenId === '123123123' || tokenId == '13')
     return {
       communityName: "SkillWallet DAO",
       logoImage:

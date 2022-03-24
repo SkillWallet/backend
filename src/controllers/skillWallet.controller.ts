@@ -143,6 +143,7 @@ export class SkillWalletController {
         req.params.skillWalletId,
         req.params.communityAddress
       );
+      this.loggerService.info("returning!");
       return res.status(200).send(events);
     } catch (err) {
       this.loggerService.error(err);
