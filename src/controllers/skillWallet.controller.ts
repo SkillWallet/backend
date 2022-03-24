@@ -7,7 +7,7 @@ import { Actions } from "../models";
 
 @injectable()
 export class SkillWalletController {
-  constructor(private loggerService: LoggerService) {}
+  constructor(private loggerService: LoggerService) { }
 
   public get = async (req: any, res: Response) => {
     try {
@@ -145,8 +145,7 @@ export class SkillWalletController {
   };
 
   public activateSkillWallet = async (req: any, res: Response) => {
-    console.log("activateSkillWallet", req.params.skillWalletId);
-
+    this.loggerService.info("activateSkillWallet " + req.params.skillWalletId);
     try {
       if (!req.params.skillWalletId) {
         return res.status(400).send("No skillWalletId passed!");
@@ -155,6 +154,7 @@ export class SkillWalletController {
         return res.status(400).send("No signature passed");
       }
       if (+req.params.skillWalletId == 123123123) {
+        this.loggerService.info("waiting ");
         await (new Promise(resolve => setTimeout(resolve, 4000)));
         return res
           .status(200)
@@ -193,6 +193,9 @@ export class SkillWalletController {
 
   public isActive = async (req: any, res: Response) => {
     try {
+      this.loggerService.info("isActive called ");
+      this.loggerService.info("skillWalletID " + req.params.skillWalletId);
+
       if (+req.params.skillWalletId == 123123123)
         return res.status(200).send({ isActive: true });
       const isActive = await SkillWalletContracts.isActive(
@@ -257,9 +260,10 @@ export class SkillWalletController {
   public addPubKeyToSkillWallet = async (req: any, res: Response) => {
     try {
       this.loggerService.info("adding public key to skill wallet");
+      this.loggerService.info("skillWalletID " + req.params.skillWalletId);
       const pubKey = req.body.pubKey;
       const skillWalletId = req.params.skillWalletId;
-      if (skillWalletId == "-1") {
+      if (skillWalletId == "123123123") {
         await (new Promise(resolve => setTimeout(resolve, 3000)))
         return res
           .status(200)
