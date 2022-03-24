@@ -11,6 +11,7 @@ export class CommunityController {
 
   public get = async (req: any, res: Response) => {
     try {
+      this.loggerService.info("com contr get");
       const coreTeamMembers: boolean = req.query.coreTeamMembers == 'true';
       const skillWallets = await communityService.getSkillWalletsPerCommunity(req.params.communityAddress, coreTeamMembers);
       return res.status(200).send(skillWallets);
@@ -22,6 +23,7 @@ export class CommunityController {
 
   public getCoreTeamMemberNames = async (req: any, res: Response) => {
     try {
+      this.loggerService.info("getCoreTeamMemberNames");
       const coreTeamMembers = await communityService.getCoreTeamMemberNames(req.params.communityAddress);
       return res.status(200).send({ coreTeamMembers });
     } catch (err) {

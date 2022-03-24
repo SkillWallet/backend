@@ -11,6 +11,8 @@ export class SkillWalletController {
 
   public get = async (req: any, res: Response) => {
     try {
+      this.loggerService.info("get");
+
       const skillWallet = await skillWalletService.getSkillWallet(
         req.query.tokenId
       );
@@ -59,6 +61,7 @@ export class SkillWalletController {
   };
   public getInteractions = async (req: any, res: Response) => {
     try {
+      this.loggerService.info("getInteractions");
       const interactionNFTs = await skillWalletService.getInteractions(
         req.params.skillWalletId
       );
@@ -73,6 +76,8 @@ export class SkillWalletController {
 
   public getTasks = async (req: any, res: Response) => {
     try {
+      this.loggerService.info("getTasks");
+
       const events = await skillWalletService.getTasks(
         req.query.activitiesAddress
       );
@@ -87,6 +92,7 @@ export class SkillWalletController {
 
   public getTaskById = async (req: any, res: Response) => {
     try {
+      this.loggerService.info("getTaskById");
       const task = await skillWalletService.getTaskById(
         req.query.activitiesAddress,
         req.params.taskId
@@ -102,6 +108,7 @@ export class SkillWalletController {
 
   public getEvents = async (req: any, res: Response) => {
     try {
+      this.loggerService.info("getEvents");
       const events = await skillWalletService.getEvents(
         req.params.skillWalletId
       );
@@ -116,6 +123,7 @@ export class SkillWalletController {
 
   public getBadges = async (req: any, res: Response) => {
     try {
+      this.loggerService.info("getBadges");
       const events = await skillWalletService.getBadges(
         req.params.skillWalletId
       );
@@ -130,7 +138,7 @@ export class SkillWalletController {
 
   public getMembershipID = async (req: any, res: Response) => {
     try {
-      console.log("getMembershipID");
+      this.loggerService.info("getMembershipID");
       const events = await skillWalletService.getMembershipID(
         req.params.skillWalletId,
         req.params.communityAddress
