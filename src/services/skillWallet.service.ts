@@ -26,14 +26,14 @@ import { getJSONFromURI, getNonce, ipfsCIDToHttpUrl } from "../utils/helpers";
 import { ActivityContracts } from "../contracts/activities.contracts";
 
 export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
-  const skillWallet: SkillWallet = {
+  let skillWallet: SkillWallet = {
     pastCommunities: [],
     skills: [],
     currentCommunities: [],
   } as SkillWallet;
 
   if (tokenId === "123123123") {
-    return {
+    skillWallet = {
       tokenId: "123123123",
       nickname: "Apple test",
       imageUrl:
@@ -51,7 +51,17 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
           repCredits: 2000,
         },
       ],
-      pastCommunities: [],
+      pastCommunities: [
+        {
+          name: "Apple Test Community",
+          address: "0x",
+          members: 2,
+          description: "This is a test community for Apple testers.",
+          scarcityScore: 72,
+          comScore: 2,
+          repCredits: 2000,
+        },
+      ],
       skills: [
         {
           name: "Tester",
