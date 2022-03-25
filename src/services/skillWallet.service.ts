@@ -5,7 +5,6 @@ import {
   Actions,
   SkillWallet,
   CommunityListView,
-  // Chat,
   InteractionNFT,
   EventsList,
   CommunityBadges,
@@ -16,11 +15,6 @@ import {
 } from "../models";
 import { SkillWalletContracts } from "../contracts/skillWallet.contracts";
 import { CommunityContracts } from "../contracts/community.contracts";
-// import {
-//   ChatCollection,
-//   QRCodeAuthCollection,
-//   NotificationCollection,
-// } from "../constants/constants";
 import { getJSONFromURI, getNonce, ipfsCIDToHttpUrl } from "../utils/helpers";
 import { ActivityContracts } from "../contracts/activities.contracts";
 
