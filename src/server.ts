@@ -4,7 +4,6 @@ import { container } from "./inversify.config";
 
 import { App } from "./app";
 import { LoggerService } from "./services/logger.service";
-import { connect } from 'mongoose';
 
 // initialize configuration
 dotenv.config();

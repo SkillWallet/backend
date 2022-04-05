@@ -11,7 +11,7 @@ export function getNonce(): number {
 
 
 export function ipfsCIDToHttpUrl(url: string, isJson: boolean) {
-    if (!url.includes('textile'))
+    if (!url.includes('https://'))
       return isJson ? `https://ipfs.io/ipfs/${url.replace('ipfs://', '')}/metadata.json` : `https://ipfs.io/ipfs/${url.replace('ipfs://', '')}`;
     else return url;
   }
