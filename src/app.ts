@@ -22,7 +22,15 @@ const swaggerOptions = {
       servers: ['http://localhost:4005']
     },
   },
-  apis: ['./src/routers/community.router.ts'],
+  components: {
+    securitySchemes: {
+      auth: {
+        type: 'http',
+        scheme: 'bearer',
+      },
+    },
+  },
+  apis: ['./src/routers/community.router.ts', './src/routers/skillWallet.router.ts'],
 };
 
 const swagger = swaggerJSDoc(swaggerOptions);
