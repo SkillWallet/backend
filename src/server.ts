@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import * as dotenv from "dotenv";
 import { container } from "./inversify.config";
-
+import { connect } from 'mongoose';
 import { App } from "./app";
 import { LoggerService } from "./services/logger.service";
 
