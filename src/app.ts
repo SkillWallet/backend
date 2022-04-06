@@ -7,8 +7,25 @@ import {
   CommunityRouter,
 } from "./routers";
 const cookieParser = require("cookie-parser");
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
 var cors = require('cors');
 require('dotenv').config()
+
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'SkillWallet API',
+      version: '1.0.0',
+      description: 'SkillWallet API Docs',
+      servers: ['http://localhost:4005']
+    },
+  },
+  apis: ['./src/routers/community.router.ts', './src/routers/skillWallet.router.ts'],
+};
+
+const swagger = swaggerJSDoc(swaggerOptions);
 
 @injectable()
 export class App {
@@ -51,5 +68,6 @@ export class App {
   private _initRoutes() {
     this._app.use("/api/skillWallet", this.skillWalletRouter.router);
     this._app.use("/api/community", this.communityRouter.router);
+    this._app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swagger));
   }
 }
