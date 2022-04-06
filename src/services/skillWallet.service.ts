@@ -1,11 +1,10 @@
+import { QrCodeAuthModel } from './../models/qrCodeAuth';
 import { SkillsCategory } from './../models/skillCategory';
 import { GeneralSkills } from './../constants/constants';
 import {
   Actions,
-  QRCodeAuth,
   SkillWallet,
   CommunityListView,
-  Chat,
   InteractionNFT,
   EventsList,
   CommunityBadges,
@@ -16,13 +15,6 @@ import {
 } from "../models";
 import { SkillWalletContracts } from "../contracts/skillWallet.contracts";
 import { CommunityContracts } from "../contracts/community.contracts";
-import { Where } from "@textile/hub";
-import threadDBClient from "../threaddb.config";
-import {
-  ChatCollection,
-  QRCodeAuthCollection,
-  NotificationCollection,
-} from "../constants/constants";
 import { getJSONFromURI, getNonce, ipfsCIDToHttpUrl } from "../utils/helpers";
 import { ActivityContracts } from "../contracts/activities.contracts";
 
@@ -369,14 +361,16 @@ export const getNonceForQR = async (
   if ((!tokenId || tokenId === "-1") && action !== Actions.Login)
     return { message: "skillWalletId is required" };
   console.log(action);
-  const authModel: QRCodeAuth = {
-    _id: undefined,
+  
+  const authModel = new QrCodeAuthModel({
     nonce,
     action,
     tokenId,
     isValidated: false,
-  };
-  await threadDBClient.insert(QRCodeAuthCollection, authModel);
+  });
+
+  await authModel.save();
+
   return { nonce, action };
 };
 
@@ -384,25 +378,13 @@ export const findNonce = async (
   action: Actions,
   tokenId: string
 ): Promise<number[]> => {
-  let query = undefined;
   const actionNumber = +action;
   console.log(actionNumber);
   console.log(typeof actionNumber);
   console.log(action == Actions.Login);
-  if (action == Actions.Login)
-    // TODO: add tokenId
-    query = new Where("action").eq(actionNumber).and("isValidated").eq(false);
-  else
-    query = new Where("tokenId")
-      .eq(tokenId)
-      .and("action")
-      .eq(actionNumber)
-      .and("isValidated")
-      .eq(false);
-  const auths = (await threadDBClient.filter(
-    QRCodeAuthCollection,
-    query
-  )) as QRCodeAuth[];
+
+  const auths = await QrCodeAuthModel.find({ tokenId, action: actionNumber, isValidated: false }).exec();
+
   return auths.map((l) => l.nonce);
 };
 
@@ -411,115 +393,11 @@ export const invalidateNonce = async (
   tokenId: string,
   action: Actions
 ): Promise<void> => {
-  const query = new Where("nonce")
-    .eq(nonce)
-    .and("isValidated")
-    .eq(false)
-    .and("action")
-    .eq(action);
-  const qrAuths = (await threadDBClient.filter(
-    QRCodeAuthCollection,
-    query
-  )) as QRCodeAuth[];
+  const qrAuths = await QrCodeAuthModel.find({ nonce, action, isValidated: false }).exec();
+
   qrAuths.forEach((auth) => {
-    auth.isValidated = true;
     if (tokenId) auth.tokenId = tokenId;
-    threadDBClient.update(QRCodeAuthCollection, auth._id, auth);
+    auth.isValidated = true;
+    auth.save();
   });
-};
-
-export const getChat = async (
-  skillWalletId: string,
-  recipient: string
-): Promise<Chat> => {
-  const query1 = new Where("participant1")
-    .eq(skillWalletId)
-    .and("participant2")
-    .eq(recipient);
-  const query2 = new Where("participant2")
-    .eq(skillWalletId)
-    .and("participant1")
-    .eq(recipient);
-
-  const finalQuery = query1.or(query2);
-
-  const res = (await threadDBClient.filter(
-    ChatCollection,
-    finalQuery
-  )) as Chat[];
-  if (res.length > 0) {
-    return res[0];
-  } else {
-    await addMessage(skillWalletId, recipient, undefined);
-    const defaultMessage = (await threadDBClient.filter(
-      ChatCollection,
-      finalQuery
-    )) as Chat[];
-    return defaultMessage[0];
-  }
-};
-
-export const getNotifications = async (
-  skillWalletId: string
-): Promise<Notification[]> => {
-  const query = new Where("skillWalletId").eq(skillWalletId);
-  const res = (await threadDBClient.filter(
-    NotificationCollection,
-    query
-  )) as Notification[];
-  return res;
-};
-
-export const addMessage = async (
-  sender: string,
-  recipient: string,
-  text: string
-): Promise<void> => {
-  const query1 = new Where("participant1")
-    .eq(sender)
-    .and("participant2")
-    .eq(recipient);
-  const query2 = new Where("participant2")
-    .eq(sender)
-    .and("participant1")
-    .eq(recipient);
-
-  const finalQuery = query1.or(query2);
-
-  const res = (await threadDBClient.filter(
-    ChatCollection,
-    finalQuery
-  )) as Chat[];
-  let chat: Chat;
-  let message = undefined;
-  if (text)
-    message = {
-      text,
-      createdAt: Date.now(),
-      sender: sender,
-    };
-
-  if (res.length > 0) {
-    chat = res[0];
-    if (message) chat.messages.push(message);
-    await threadDBClient.update(ChatCollection, chat._id, chat);
-  } else {
-    const senderJsonUrl = await SkillWalletContracts.getTokenURI(sender);
-    let senderJsonMetadata = await getJSONFromURI(senderJsonUrl);
-    const recipientJsonUrl = await SkillWalletContracts.getTokenURI(recipient);
-    let recipientJsonMetadata = await getJSONFromURI(recipientJsonUrl);
-
-    chat = {
-      _id: undefined,
-      participant1: sender,
-      participant2: recipient,
-      participant1Name: senderJsonMetadata.properties.username,
-      participant1PhotoUrl: senderJsonMetadata.image,
-      participant2Name: recipientJsonMetadata.properties.username,
-      participant2PhotoUrl: recipientJsonMetadata.image,
-      messages: message ? [message] : [],
-    };
-
-    await threadDBClient.insert(ChatCollection, chat);
-  }
 };

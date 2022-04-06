@@ -3,7 +3,7 @@ version: '3.4'
 services:
   skill-wallet-api:
     container_name: skill-wallet-api
-    image: node
+    image: node:16
     volumes:
       - .:/app
     working_dir: /app
