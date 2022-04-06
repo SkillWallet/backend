@@ -404,8 +404,6 @@ export class SkillWalletRouter {
    * /api/skillWallet/access:
    *   post:
    *     description: Authenticates Partner App.
-   *     security:
-   *     - auth: []
    *     responses:
    *       200:
    *         description: Success
