@@ -17,6 +17,7 @@ import { SkillWalletContracts } from "../contracts/skillWallet.contracts";
 import { CommunityContracts } from "../contracts/community.contracts";
 import { getJSONFromURI, getNonce, ipfsCIDToHttpUrl } from "../utils/helpers";
 import { ActivityContracts } from "../contracts/activities.contracts";
+import { ethers } from 'ethers';
 
 export async function getByCategory(category: string): Promise<SkillsCategory> {
   return GeneralSkills.find(coll => coll.main === category) as SkillsCategory;
@@ -181,6 +182,9 @@ export const getEvents = async (tokenId: string): Promise<EventsList> => {
 };
 
 export const getTasks = async (activityAddress: string): Promise<Task[]> => {
+  if (activityAddress == ethers.constants.AddressZero) {
+    return [];
+  }
   const activityIds = await ActivityContracts.getActivities(
     activityAddress,
     Type.CoreTeamTask
@@ -361,7 +365,7 @@ export const getNonceForQR = async (
   if ((!tokenId || tokenId === "-1") && action !== Actions.Login)
     return { message: "skillWalletId is required" };
   console.log(action);
-  
+
   const authModel = new QrCodeAuthModel({
     nonce,
     action,
