@@ -135,6 +135,8 @@ export class CommunityRouter {
   //  *         description: Something went wrong, please try again later.
   //  */
     this._router.post("/key", this.communityController.postPartnerAgreement)
+
+    this._router.post('/key/:key/discordWebhook', this.communityController.addDiscordWebHook);
   }
 
   public get router(): Router {

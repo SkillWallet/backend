@@ -48,6 +48,24 @@ export class CommunityController {
     }
   }
 
+
+
+  public addDiscordWebHook = async  (req: any, res: Response) => {
+    try {
+      const key = await services.getKey(req.params.key);
+      if(!req.body.discordWebhook)
+        return res.status(400).send({ error: 'Webhook not passed!'});
+      if(key){
+        await services.addDiscordWebHook(req.params.key, req.body.discordWebhook);
+        return res.status(200).send({message: 'Discord Webhook added!'});
+      } else 
+      return res.status(400).send({ error: 'Invalid key!'});
+    } catch (err) {
+      this.loggerService.error(err);
+      return res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
   public get = async (req: any, res: Response) => {
     try {
       const coreTeamMembers: boolean = req.query.coreTeamMembers == 'true';

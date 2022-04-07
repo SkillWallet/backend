@@ -15,7 +15,7 @@ var crypto = require("crypto");
 
 export async function getPAByCommunity(communityAddress: string): Promise<PartnerKey> {
     const partnerKey = await PartnerKeyModel.find({ communityAddress }).exec();
-    
+
     if (partnerKey && partnerKey.length > 0)
         return partnerKey[0];
     else
@@ -60,9 +60,16 @@ export async function getCommunity(address: string): Promise<CommunityDetailsVie
     };
 }
 
+export async function addDiscordWebHook(key: string, webhook: string) {
+    const partnerKey = await PartnerKeyModel.findOne({ key }).exec();
+    if(partnerKey) {
+        partnerKey.discordWebhookUrl = webhook;
+        partnerKey.save();
+    }
+}
+
 export async function getKey(key: string): Promise<PartnerKey> {
     const partnerKey = await PartnerKeyModel.find({ key }).exec();
-
     if (partnerKey && partnerKey.length > 0)
         return partnerKey[0];
     else
