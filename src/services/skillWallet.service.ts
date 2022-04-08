@@ -253,7 +253,7 @@ export const getTaskById = async (
       taskDetails.task.taker
     );
     const jsonUriCID = await SkillWalletContracts.getTokenURI(takerTokenId);
-    const jsonUri = ipfsCIDToHttpUrl(jsonUriCID, false);
+    const jsonUri = ipfsCIDToHttpUrl(jsonUriCID, true);
     let jsonMetadata = await getJSONFromURI(jsonUri);
     taskDetails.taker = {
       tokenId: takerTokenId,
