@@ -202,8 +202,10 @@ export const getTasks = async (activityAddress: string): Promise<Task[]> => {
       activityAddress,
       activityIds[i]
     );
+    console.log(jsonMetadata);
     tasks.push({
       activityId: task.activityId.toString(),
+      title: jsonMetadata.name,
       createdOn: task.createdOn.toString(),
       status: task.status,
       creator: task.creator.toString(),
@@ -242,7 +244,7 @@ export const getTaskById = async (
     creator: task.creator.toString(),
     taker: task.taker.toString(),
     description: jsonMetadata.properties.description,
-    title: jsonMetadata.properties.description,
+    title: jsonMetadata.name,
     isCoreTeamMembersOnly: jsonMetadata.properties.isCoreTeamMembersOnly,
   };
 
