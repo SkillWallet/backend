@@ -10,20 +10,32 @@ export class CommunityController {
     private loggerService: LoggerService,
   ) { }
 
-  public getPAByCommunity = async  (req: any, res: Response) => {
+
+  public getAllSWHolders = async (req: any, res: Response) => {
     try {
-      const key = await services.getPAByCommunity(req.params.communityAddress);
-      if(key){
-        return res.status(200).send(key);
-      } else 
-        return res.status(400).send({ error: 'Invalid key!'});
+      const coreTeamMembers: boolean = req.query.coreTeamMembers == 'true';
+      const skillWallets = await communityService.getSkillWalletsPerCommunity(req.params.communityAddress, coreTeamMembers);
+      return res.status(200).send(skillWallets);
     } catch (err) {
       this.loggerService.error(err);
       return res.status(500).send({ error: "Something went wrong, please try again later." });
     }
   }
 
-  public postPartnerAgreement = async  (req: any, res: Response) => {
+  public getPAByCommunity = async (req: any, res: Response) => {
+    try {
+      const key = await services.getPAByCommunity(req.params.communityAddress);
+      if (key) {
+        return res.status(200).send(key);
+      } else
+        return res.status(400).send({ error: 'Invalid key!' });
+    } catch (err) {
+      this.loggerService.error(err);
+      return res.status(500).send({ error: "Something went wrong, please try again later." });
+    }
+  }
+
+  public postPartnerAgreement = async (req: any, res: Response) => {
     try {
       const key = await services.createPartnerAgreementKey(req.body.partnersAgreementAddress, req.body.communityAddress);
       return res.status(201).send({ key });
@@ -33,15 +45,15 @@ export class CommunityController {
     }
   }
 
-  public getCommunityByPartnerAgreementKey = async  (req: any, res: Response) => {
+  public getCommunityByPartnerAgreementKey = async (req: any, res: Response) => {
     try {
       const key = await services.getKey(req.params.key);
-      if(key){
+      if (key) {
         const com = await services.getCommunity(key.communityAddress);
         com.partnersAgreementAddress = key.partnersAgreementAddress;
         return res.status(200).send(com);
-      } else 
-      return res.status(400).send({ error: 'Invalid key!'});
+      } else
+        return res.status(400).send({ error: 'Invalid key!' });
     } catch (err) {
       this.loggerService.error(err);
       return res.status(500).send({ error: "Something went wrong, please try again later." });
@@ -50,16 +62,16 @@ export class CommunityController {
 
 
 
-  public addDiscordWebHook = async  (req: any, res: Response) => {
+  public addDiscordWebHook = async (req: any, res: Response) => {
     try {
       const key = await services.getKey(req.params.key);
-      if(!req.body.discordWebhook)
-        return res.status(400).send({ error: 'Webhook not passed!'});
-      if(key){
+      if (!req.body.discordWebhook)
+        return res.status(400).send({ error: 'Webhook not passed!' });
+      if (key) {
         await services.addDiscordWebHook(req.params.key, req.body.discordWebhook);
-        return res.status(200).send({message: 'Discord Webhook added!'});
-      } else 
-      return res.status(400).send({ error: 'Invalid key!'});
+        return res.status(200).send({ message: 'Discord Webhook added!' });
+      } else
+        return res.status(400).send({ error: 'Invalid key!' });
     } catch (err) {
       this.loggerService.error(err);
       return res.status(500).send({ error: "Something went wrong, please try again later." });
