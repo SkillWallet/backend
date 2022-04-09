@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.9'
 
 services:
   skill-wallet-api:
@@ -16,6 +16,10 @@ services:
     command: /bin/bash -c 'yarn; yarn start;'
     networks:
       - skill-wallet
+    deploy:
+      restart_policy:
+        condition: on-failure
+
 
   skillwallet-db:
     container_name: skillwallet-db

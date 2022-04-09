@@ -145,8 +145,6 @@ export class SkillWalletController {
   };
 
   public activateSkillWallet = async (req: any, res: Response) => {
-    console.log("activateSkillWallet", req.params.skillWalletId);
-
     try {
       if (!req.params.skillWalletId) {
         return res.status(400).send("No skillWalletId passed!");
