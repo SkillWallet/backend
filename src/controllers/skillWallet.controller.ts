@@ -43,7 +43,8 @@ export class SkillWalletController {
 
   public getAgreementByKey = async (req: any, res: Response) => {
     try {
-      return await parnerAgreement(req.params.key);
+      const result = await parnerAgreement(req.params.key);
+      return res.status(200).send(result);
     } catch (err) {
       this.loggerService.error(err);
       return res
