@@ -81,7 +81,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
       let jsonOldCommunityMetadata = await getJSONFromURI(communityMetadata);
       console.log(communityMetadata);
       skillWallet.pastCommunities.push({
-        name: jsonOldCommunityMetadata.title ?? "DiTo #1",
+        name: jsonOldCommunityMetadata.title ?? jsonOldCommunityMetadata.name,
         address,
       });
     });
@@ -100,7 +100,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
     const currentCommunityModel = {
       address: currentCommunity,
       members: members,
-      name: jsonCommunityMetadata.title ?? "DiTo #1",
+      name: jsonCommunityMetadata.title ?? jsonCommunityMetadata.name,
       description: jsonCommunityMetadata.description,
       scarcityScore: 0,
       comScore: 1.08,
