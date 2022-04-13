@@ -1,4 +1,4 @@
-import { LoggerService } from "../services";
+import { getKey as parnerAgreement, LoggerService } from "../services";
 import { Response } from "express";
 import { injectable } from "inversify";
 import { SkillWalletContracts } from "../contracts/skillWallet.contracts";
@@ -33,6 +33,18 @@ export class SkillWalletController {
         skillWalletAddress: process.env.SKILL_WALLET_ADDRESS,
         rpc: process.env.MUMBAI_RPC_PROVIDER,
       });
+    } catch (err) {
+      this.loggerService.error(err);
+      return res
+        .status(500)
+        .send({ error: "Something went wrong, please try again later." });
+    }
+  };
+
+  public getAgreementByKey = async (req: any, res: Response) => {
+    try {
+      const result = await parnerAgreement(req.params.key);
+      return res.status(200).send(result);
     } catch (err) {
       this.loggerService.error(err);
       return res

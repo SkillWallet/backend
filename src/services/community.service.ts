@@ -1,6 +1,5 @@
 import { PartnerKey, PartnerKeyModel } from './../models/key';
 import { CommunityDetailsView } from './../models/community';
-import { DistributedTownContracts } from './../contracts/distributedTown.contracts';
 
 import {
     CoreTeamMemberNameModel,
@@ -38,7 +37,6 @@ export async function getCommunity(address: string): Promise<CommunityDetailsVie
     const metadataUriCID = await CommunityContracts.getMetadataUri(address);
     const metadataUri = ipfsCIDToHttpUrl(metadataUriCID, true);
     const metadata = await getJSONFromURI(metadataUri);
-    const isDiToNative = await DistributedTownContracts.isDiToNativeCommunity(address);
 
     let catName = '';
     switch (metadata.properties.template) {
@@ -48,14 +46,14 @@ export async function getCommunity(address: string): Promise<CommunityDetailsVie
     }
     const skills = await skillsService.getByCategory(catName);
     return {
-        name: metadata.title,
+        name: metadata.title ?? metadata.name,
         address: address,
         description: metadata.description,
-        roles: metadata.skills,
+        roles: metadata.properties.skills ?? metadata.skills,
         template: metadata.properties.template,
         image: ipfsCIDToHttpUrl(metadata.image, false),
         skills: skills,
-        isDiToNativeCommunity: isDiToNative,
+        isDiToNativeCommunity: false,
         partnersAgreementAddress: undefined
     };
 }
@@ -82,7 +80,7 @@ export const getSkillWalletsPerCommunity = async (communityAddress: string, core
         const metadataCID = await CommunityContracts.getMetadataUri(communityAddress);
         const communityUri = ipfsCIDToHttpUrl(metadataCID, true);
         const communityMetadata = await getJSONFromURI(communityUri);
-        const filteredRoles = communityMetadata.skills.roles
+        const filteredRoles = communityMetadata.skills?.roles || communityMetadata.properties.skills?.roles
             .filter(r => r.isCoreTeamMember == coreTeamMembers)
             .map(r => r.roleName) as string[]
 
@@ -99,7 +97,7 @@ export const getSkillWalletsPerCommunity = async (communityAddress: string, core
                 const metadataCID = await SkillWalletContracts.getTokenURI(tokenId);
                 const jsonUri = ipfsCIDToHttpUrl(metadataCID, true);
                 let jsonMetadata = await getJSONFromURI(jsonUri)
-                const skills = jsonMetadata.properties.roles as any[];
+                const skills = jsonMetadata.properties.skills ?? jsonMetadata.skills as any[];
                 console.log(skills);
                 if (skills && filteredRoles.findIndex(c => c == skills[0].name) > -1) {
                     skillWalletsResponse[skills[0].name].push({
