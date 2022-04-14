@@ -29,11 +29,11 @@ export class SkillWalletRouter {
    *           schema:
    *             type:
    *               object
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.post("/:skillWalletId/activate", this.skillWalletController.activateSkillWallet);
   /**
@@ -53,11 +53,11 @@ export class SkillWalletRouter {
    *           schema:
    *             type:
    *               object
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.post("/:skillWalletId/pubKey", this.skillWalletController.addPubKeyToSkillWallet);
   /**
@@ -77,11 +77,11 @@ export class SkillWalletRouter {
    *           schema:
    *             type:
    *               object
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.post("/:skillWalletId/validate", this.skillWalletController.validate);
   /**
@@ -95,11 +95,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.get("/:skillWalletId/isActive", this.skillWalletController.isActive);
     
@@ -115,11 +115,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.get('/', this.skillWalletController.get);
   /**
@@ -133,11 +133,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.get("/:skillWalletId/interactions", this.skillWalletController.getInteractions);
   /**
@@ -151,11 +151,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.get("/:skillWalletId/events", this.skillWalletController.getEvents);
   /**
@@ -169,11 +169,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.get("/:skillWalletId/tasks", this.skillWalletController.getTasks);
   /**
@@ -192,11 +192,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.get("/:skillWalletId/tasks/:taskId", this.skillWalletController.getTaskById);
   /**
@@ -210,11 +210,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.get("/:skillWalletId/badges", this.skillWalletController.getBadges);
   /**
@@ -233,11 +233,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.get("/:skillWalletId/community/:communityAddress/membershipID", this.skillWalletController.getMembershipID);
     
@@ -258,11 +258,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.get("/:skillWalletId/nonces", this.skillWalletController.getNonceForValidation);
   /**
@@ -286,11 +286,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.delete("/:skillWalletId/nonces", this.skillWalletController.deleteNonce);
   /**
@@ -309,11 +309,11 @@ export class SkillWalletRouter {
    *       schema:
    *         type: string
    *       required: true
-   *       responses:
-   *         200:
-   *           description: Success
-   *         500:
-   *           description: Something went wrong, please try again later.
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Something went wrong, please try again later.
    */
     this._router.post('/:skillWalletId/nonces', this.skillWalletController.generateNonce);
 
