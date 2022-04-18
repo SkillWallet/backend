@@ -12,7 +12,7 @@ const swaggerUI = require('swagger-ui-express');
 var cors = require('cors');
 require('dotenv').config()
 
-const swaggerOptions = {
+const swaggerDefinition = {
   definition: {
     openapi: '3.0.0',
     info: {
@@ -22,10 +22,19 @@ const swaggerOptions = {
       servers: ['http://localhost:4005']
     },
   },
-  apis: ['./src/routers/community.router.ts', './src/routers/skillWallet.router.ts'],
 };
-
-const swagger = swaggerJSDoc(swaggerOptions);
+const optionsV1 = {
+  swaggerDefinition,
+  apis: ['./src/routers/public.router.ts']
+};
+const optionsV2 = {
+  swaggerDefinition,
+  apis: ['./src/routers/private.router.ts']
+};
+const swaggerSpecV1 = swaggerJSDoc(optionsV1);
+const swaggerSpecV2 = swaggerJSDoc(optionsV2);
+const swaggerHtmlV1 = swaggerUI.generateHTML(swaggerSpecV1, optionsV1)
+const swaggerHtmlV2 = swaggerUI.generateHTML(swaggerSpecV2, optionsV2)
 
 @injectable()
 export class App {
@@ -68,6 +77,9 @@ export class App {
   private _initRoutes() {
     this._app.use("/api/skillWallet", this.skillWalletRouter.router);
     this._app.use("/api/community", this.communityRouter.router);
-    this._app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swagger));
+    this._app.use('/api/docs', swaggerUI.serveFiles(swaggerSpecV1, optionsV1));
+    this._app.get('/api/docs', (req, res) => { req; res.send(swaggerHtmlV1) });
+    this._app.use('/api/docs-private', swaggerUI.serveFiles(swaggerSpecV2, optionsV2));
+    this._app.get('/api/docs-private', (req, res) => { req; res.send(swaggerHtmlV2) });
   }
 }
