@@ -330,19 +330,32 @@ export class SkillWalletRouter {
    *         description: Something went wrong, please try again later.
    */
     this._router.get("/config", this.skillWalletController.getConfig);
+  // /**
+  //  * @swagger
+  //  * /api/skillWallet/access:
+  //  *   post:
+  //  *     description: Authenticates Partner App.
+  //  *     responses:
+  //  *       200:
+  //  *         description: Success
+  //  *       500:
+  //  *         description: Something went wrong, please try again later.
+  //  */
+    this._router.post("/access", this.skillWalletController.authenticatePartnersApp);
+
+  // agreement
   /**
    * @swagger
-   * /api/skillWallet/access:
-   *   post:
-   *     description: Authenticates Partner App.
+   * /api/skillWallet/agreement:
+   *   get:
+   *     description: Gets SkillWallet agreement key
    *     responses:
    *       200:
    *         description: Success
    *       500:
    *         description: Something went wrong, please try again later.
    */
-    this._router.post("/access", this.skillWalletController.authenticatePartnersApp);
-
+    this._router.get("/agreement/:key", this.skillWalletController.getAgreementByKey);
   }
 
   public get router(): Router {

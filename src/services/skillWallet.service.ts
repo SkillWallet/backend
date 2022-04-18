@@ -17,6 +17,7 @@ import { SkillWalletContracts } from "../contracts/skillWallet.contracts";
 import { CommunityContracts } from "../contracts/community.contracts";
 import { getJSONFromURI, getNonce, ipfsCIDToHttpUrl } from "../utils/helpers";
 import { ActivityContracts } from "../contracts/activities.contracts";
+import { ethers } from 'ethers';
 
 export async function getByCategory(category: string): Promise<SkillsCategory> {
   return GeneralSkills.find(coll => coll.main === category) as SkillsCategory;
@@ -80,7 +81,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
       let jsonOldCommunityMetadata = await getJSONFromURI(communityMetadata);
       console.log(communityMetadata);
       skillWallet.pastCommunities.push({
-        name: jsonOldCommunityMetadata.title ?? "DiTo #1",
+        name: jsonOldCommunityMetadata.title ?? jsonOldCommunityMetadata.name,
         address,
       });
     });
@@ -99,7 +100,7 @@ export const getSkillWallet = async (tokenId: string): Promise<SkillWallet> => {
     const currentCommunityModel = {
       address: currentCommunity,
       members: members,
-      name: jsonCommunityMetadata.title ?? "DiTo #1",
+      name: jsonCommunityMetadata.title ?? jsonCommunityMetadata.name,
       description: jsonCommunityMetadata.description,
       scarcityScore: 0,
       comScore: 1.08,
@@ -181,6 +182,9 @@ export const getEvents = async (tokenId: string): Promise<EventsList> => {
 };
 
 export const getTasks = async (activityAddress: string): Promise<Task[]> => {
+  if (activityAddress == ethers.constants.AddressZero) {
+    return [];
+  }
   const activityIds = await ActivityContracts.getActivities(
     activityAddress,
     Type.CoreTeamTask
@@ -198,8 +202,10 @@ export const getTasks = async (activityAddress: string): Promise<Task[]> => {
       activityAddress,
       activityIds[i]
     );
+    console.log(jsonMetadata);
     tasks.push({
       activityId: task.activityId.toString(),
+      title: jsonMetadata.name,
       createdOn: task.createdOn.toString(),
       status: task.status,
       creator: task.creator.toString(),
@@ -238,7 +244,7 @@ export const getTaskById = async (
     creator: task.creator.toString(),
     taker: task.taker.toString(),
     description: jsonMetadata.properties.description,
-    title: jsonMetadata.properties.description,
+    title: jsonMetadata.name,
     isCoreTeamMembersOnly: jsonMetadata.properties.isCoreTeamMembersOnly,
   };
 
@@ -247,7 +253,7 @@ export const getTaskById = async (
       taskDetails.task.taker
     );
     const jsonUriCID = await SkillWalletContracts.getTokenURI(takerTokenId);
-    const jsonUri = ipfsCIDToHttpUrl(jsonUriCID, false);
+    const jsonUri = ipfsCIDToHttpUrl(jsonUriCID, true);
     let jsonMetadata = await getJSONFromURI(jsonUri);
     taskDetails.taker = {
       tokenId: takerTokenId,
@@ -361,7 +367,7 @@ export const getNonceForQR = async (
   if ((!tokenId || tokenId === "-1") && action !== Actions.Login)
     return { message: "skillWalletId is required" };
   console.log(action);
-  
+
   const authModel = new QrCodeAuthModel({
     nonce,
     action,
