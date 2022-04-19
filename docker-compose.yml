@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.4'
 
 services:
   skill-wallet-api:
@@ -16,14 +16,15 @@ services:
     command: /bin/bash -c 'yarn; yarn start;'
     networks:
       - skill-wallet
-    deploy:
-      restart_policy:
-        condition: on-failure
-
 
   skillwallet-db:
     container_name: skillwallet-db
     image: mongo
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
     volumes:
       - ./data-dev:/data/db
     ports:
