@@ -74,8 +74,8 @@ export class App {
 
 
     this._app.use(cors());
-    this._app.use(limiter);
-    this._app.use(speedLimiter);
+    // this._app.use(limiter);
+    // this._app.use(speedLimiter);
 
     //Initialize app routes
     this._initRoutes();
