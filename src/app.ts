@@ -6,25 +6,25 @@ import {
   SkillWalletRouter,
   CommunityRouter,
 } from "./routers";
-const rateLimit = require('express-rate-limit');
-const slowDown = require("express-slow-down");
+// const rateLimit = require('express-rate-limit');
+// const slowDown = require("express-slow-down");
 const cookieParser = require("cookie-parser");
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 var cors = require('cors');
 require('dotenv').config()
 
-const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000,
-	max: 100,
-	standardHeaders: true,
-	legacyHeaders: false,
-});
-const speedLimiter = slowDown({
-  windowMs: 15 * 60 * 1000,
-  delayAfter: 100,
-  delayMs: 500
-});
+// const limiter = rateLimit({
+// 	windowMs: 15 * 60 * 1000,
+// 	max: 100,
+// 	standardHeaders: true,
+// 	legacyHeaders: false,
+// });
+// const speedLimiter = slowDown({
+//   windowMs: 15 * 60 * 1000,
+//   delayAfter: 100,
+//   delayMs: 500
+// });
 
 const swaggerOptions = {
   definition: {
